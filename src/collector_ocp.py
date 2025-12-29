@@ -376,6 +376,19 @@ class OCPCollector:
         else:
             snapshot['routes'] = []
 
+        # Collect Kafka/Event Streams data (optional)
+        try:
+            from collector_kafka import KafkaCollector
+            kafka_collector = KafkaCollector()
+            kafka_data = kafka_collector.collect_all()
+            snapshot['kafka'] = kafka_data.get('event_streams', {})
+            # Merge warnings and errors
+            self.warnings.extend(kafka_collector.warnings)
+            self.errors.extend(kafka_collector.errors)
+        except Exception as e:
+            self.warnings.append(f"Kafka collection skipped: {e}")
+            snapshot['kafka'] = None
+
         # Add errors and warnings
         snapshot['metadata']['errors'] = self.errors
         snapshot['metadata']['warnings'] = self.warnings
