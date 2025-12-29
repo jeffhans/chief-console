@@ -18,21 +18,24 @@ import argparse
 class MissionConsoleMonitor:
     """Automated monitoring for Mission Console"""
 
-    def __init__(self, interval: int = 120, auto_open: bool = False, max_runs: int = 0):
+    def __init__(self, interval: int = 120, auto_open: bool = False, max_runs: int = 0, min_gap: int = 10):
         """
         Initialize monitor
 
         Args:
-            interval: Seconds between runs (default: 120 = 2 minutes)
+            interval: Seconds between run STARTS (default: 120 = 2 minutes)
             auto_open: Automatically open dashboard in browser after each run
             max_runs: Maximum number of runs (0 = infinite)
+            min_gap: Minimum seconds between runs, even if collection is slow (default: 10)
         """
         self.interval = interval
         self.auto_open = auto_open
         self.max_runs = max_runs
+        self.min_gap = min_gap
         self.run_count = 0
         self.last_critical = 0
         self.last_important = 0
+        self.run_durations = []  # Track run times for statistics
 
     def run(self):
         """Run the monitoring loop"""
@@ -59,6 +62,9 @@ class MissionConsoleMonitor:
                 print(f"RUN #{self.run_count} - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                 print(f"{'='*70}\n")
 
+                # Track run duration
+                run_start = time.time()
+
                 # Run mission console
                 self._run_console()
 
@@ -66,9 +72,16 @@ class MissionConsoleMonitor:
                 if self.auto_open:
                     self._open_dashboard()
 
+                # Calculate duration
+                run_duration = time.time() - run_start
+                self.run_durations.append(run_duration)
+
+                # Display duration and statistics
+                self._show_run_stats(run_duration)
+
                 # Wait for next run
                 if self.max_runs == 0 or self.run_count < self.max_runs:
-                    self._wait_for_next_run()
+                    self._wait_for_next_run(run_duration)
 
         except KeyboardInterrupt:
             print("\n\n" + "=" * 70)
@@ -154,16 +167,41 @@ class MissionConsoleMonitor:
             except Exception as e:
                 print(f"   ⚠️  Could not open dashboard: {e}")
 
-    def _wait_for_next_run(self):
-        """Wait for next run with countdown"""
-        print(f"\n⏳ Next run in {self.interval} seconds...")
+    def _show_run_stats(self, run_duration: float):
+        """Display run duration and statistics"""
+        print(f"\n⏱️  Collection took {run_duration:.1f}s")
+
+        # Warn if run is taking too long relative to interval
+        if run_duration > self.interval * 0.8:
+            print(f"   ⚠️  Warning: Collection took {(run_duration/self.interval)*100:.0f}% of interval!")
+            print(f"   Consider increasing --interval to avoid hammering the cluster")
+
+        # Show average if we have multiple runs
+        if len(self.run_durations) > 1:
+            avg_duration = sum(self.run_durations) / len(self.run_durations)
+            print(f"   📊 Average: {avg_duration:.1f}s over {len(self.run_durations)} runs")
+
+    def _wait_for_next_run(self, run_duration: float):
+        """
+        Wait for next run with countdown, accounting for actual run time
+
+        Args:
+            run_duration: How long the collection took in seconds
+        """
+        # Calculate actual wait time: interval - run_duration, but at least min_gap
+        wait_time = max(self.interval - run_duration, self.min_gap)
+
+        if wait_time < self.min_gap:
+            print(f"\n⚠️  Run took {run_duration:.1f}s, enforcing minimum {self.min_gap}s gap")
+
+        print(f"\n⏳ Next run in {wait_time:.0f} seconds...")
 
         # Show countdown for last 10 seconds
-        remaining = self.interval
+        remaining = wait_time
 
         while remaining > 0:
             if remaining <= 10:
-                print(f"\r   {remaining}s...", end="", flush=True)
+                print(f"\r   {remaining:.0f}s...", end="", flush=True)
             time.sleep(1)
             remaining -= 1
 
@@ -213,6 +251,13 @@ Examples:
         help='Maximum number of runs (0 = unlimited, default: 0)'
     )
 
+    parser.add_argument(
+        '--min-gap',
+        type=int,
+        default=10,
+        help='Minimum seconds between runs, even if collection is slow (default: 10)'
+    )
+
     args = parser.parse_args()
 
     # Validate interval
@@ -224,7 +269,8 @@ Examples:
     monitor = MissionConsoleMonitor(
         interval=args.interval,
         auto_open=args.auto_open,
-        max_runs=args.max_runs
+        max_runs=args.max_runs,
+        min_gap=args.min_gap
     )
 
     monitor.run()
