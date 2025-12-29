@@ -1,0 +1,64 @@
+# CP4I Mission Console Configuration
+
+# OpenShift / CP4I Settings
+cluster:
+  # Namespaces to monitor (leave empty to auto-discover CP4I namespaces)
+  namespaces: []
+
+  # Auto-discover namespaces with these labels
+  auto_discover_labels:
+    - app.kubernetes.io/part-of=ibm-cp4i
+    - app.kubernetes.io/name=ibm-integration-platform-navigator
+
+# Kafka / Event Streams Settings
+kafka:
+  # Topic naming patterns to identify logical pipelines
+  topic_patterns:
+    raw: ".*\\.raw$"
+    enriched: ".*\\.enriched$"
+    curated: ".*\\.curated$"
+
+  # Consumer group patterns to monitor
+  consumer_group_patterns:
+    - ".*"
+
+# Data Collection Settings
+collection:
+  # Refresh cadence (in seconds) for auto-refresh mode
+  refresh_interval: 300
+
+  # Number of historical snapshots to retain
+  snapshot_history: 10
+
+  # Event lookback window (in hours)
+  event_lookback_hours: 24
+
+# Activity Profile Thresholds
+activity_thresholds:
+  kafka_topic_throughput:
+    low: 100      # messages per minute
+    high: 10000   # messages per minute
+
+  kafka_consumer_lag:
+    warning: 1000
+    critical: 10000
+
+  pod_restart:
+    warning: 3
+    critical: 10
+
+# Dashboard Settings
+dashboard:
+  title: "CP4I Mission Console"
+
+  # Enable AI-generated narrative sections
+  enable_ai_narrative: false
+
+  # Auto-refresh in browser (seconds, 0 to disable)
+  auto_refresh_seconds: 0
+
+# Output Settings
+output:
+  dashboard_path: "output/dashboard.html"
+  snapshots_path: "output/snapshots"
+  assets_path: "output/assets"
