@@ -8,14 +8,15 @@ Implements "Meaningful Waves" design with graceful degradation.
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 
 class DashboardRenderer:
     """Renders Mission Console dashboard from snapshot data"""
 
-    def __init__(self, snapshot: Dict[str, Any]):
+    def __init__(self, snapshot: Dict[str, Any], diff: Optional[Dict[str, Any]] = None):
         self.snapshot = snapshot
+        self.diff = diff
         self.metadata = snapshot.get('metadata', {})
         self.cluster = snapshot.get('cluster', {})
         self.nodes = snapshot.get('nodes', [])
@@ -305,6 +306,7 @@ class DashboardRenderer:
 
         {self._render_cp4i_installation_notice(cp4i_installed)}
         {self._render_quick_links()}
+        {self._render_changes() if self.diff else ""}
     </div>"""
 
     def _render_status_card(self, status: Dict[str, Any]) -> str:
@@ -397,6 +399,96 @@ class DashboardRenderer:
         • <a href="{console_url}" target="_blank">OpenShift Console</a><br>
         • API: <code>{api_url}</code>
     </div>"""
+
+    def _render_changes(self) -> str:
+        """Render changes section (what changed since last snapshot)"""
+        if not self.diff:
+            return ""
+
+        metadata = self.diff.get('metadata', {})
+        changes = self.diff.get('changes', {})
+        summary = self.diff.get('summary', {})
+
+        # Check if there are any meaningful changes
+        total_changes = (len(changes.get('critical', [])) +
+                        len(changes.get('important', [])))
+
+        if total_changes == 0:
+            return """<div class="info-box" style="margin-top: 20px;">
+        <strong>📊 No significant changes</strong> detected since last collection ({}).
+    </div>""".format(metadata.get('time_elapsed', 'unknown time'))
+
+        # Build changes HTML
+        changes_html = f"""<div style="margin-top: 30px; padding: 20px; background: #fff; border-radius: 8px; border-left: 4px solid #0f62fe;">
+        <h3 style="margin-bottom: 15px; color: #0f62fe;">🔄 What Changed (Last {metadata.get('time_elapsed', 'unknown')})</h3>"""
+
+        # Critical changes
+        if changes.get('critical'):
+            changes_html += """
+        <div style="margin: 15px 0;">
+            <strong style="color: #da1e28;">🔴 CRITICAL</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">"""
+
+            for change in changes['critical'][:5]:  # Limit to 5
+                changes_html += self._format_change(change)
+
+            changes_html += "</ul></div>"
+
+        # Important changes
+        if changes.get('important'):
+            changes_html += """
+        <div style="margin: 15px 0;">
+            <strong style="color: #f1c21b;">🟡 IMPORTANT</strong>
+            <ul style="margin: 10px 0; padding-left: 20px;">"""
+
+            for change in changes['important'][:10]:  # Limit to 10
+                changes_html += self._format_change(change)
+
+            changes_html += "</ul></div>"
+
+        # Summary stats
+        if summary.get('change_counts'):
+            counts = summary['change_counts']
+            changes_html += f"""
+        <div style="margin-top: 20px; padding: 15px; background: #f4f4f4; border-radius: 4px; font-size: 0.9rem;">
+            <strong>Summary:</strong>
+            {counts['additions']} additions, {counts['modifications']} modifications, {counts['deletions']} deletions
+        </div>"""
+
+        changes_html += "</div>"
+
+        return changes_html
+
+    def _format_change(self, change: Dict[str, Any]) -> str:
+        """Format a single change for display"""
+        change_type = change.get('type', 'unknown')
+        action = change.get('action', 'changed')
+        name = change.get('name', 'Unknown')
+
+        if change_type == 'operator' and action == 'added':
+            return f"<li>✅ New operator: <strong>{name}</strong> v{change.get('version', 'N/A')} in {change.get('namespace')}</li>"
+
+        elif change_type == 'event_streams':
+            return f"<li>🎉 Event Streams: <strong>{name}</strong> - {change.get('status')}</li>"
+
+        elif change_type == 'kafka_topic' and action == 'created':
+            category = change.get('category', 'general')
+            return f"<li>📊 New topic: <strong>{name}</strong> ({category}, {change.get('partitions')} partitions)</li>"
+
+        elif change_type == 'pod' and action == 'restarted':
+            return f"<li>🔄 Pod <strong>{name}</strong> restarted {change.get('restart_count')}x (total: {change.get('total_restarts')})</li>"
+
+        elif change_type == 'pod' and action == 'created':
+            return f"<li>➕ New pod: <strong>{name}</strong> in {change.get('namespace')} ({change.get('phase')})</li>"
+
+        elif change_type == 'namespace' and action == 'created':
+            return f"<li>📁 New namespace: <strong>{name}</strong></li>"
+
+        elif change_type == 'route' and action == 'created':
+            return f"<li>🌐 New route: <strong>{name}</strong> → {change.get('url')}</li>"
+
+        else:
+            return f"<li>{change_type}: <strong>{name}</strong> - {action}</li>"
 
     def _render_wave2_cp4i(self) -> str:
         """Wave 2: CP4I Workloads"""
@@ -601,13 +693,14 @@ class DashboardRenderer:
             return iso_string
 
 
-def render_dashboard(snapshot_path: str, output_path: str = "output/dashboard.html") -> str:
+def render_dashboard(snapshot_path: str, output_path: str = "output/dashboard.html", diff: Optional[Dict[str, Any]] = None) -> str:
     """
     Render dashboard from snapshot file
 
     Args:
         snapshot_path: Path to JSON snapshot file
         output_path: Path for output HTML file
+        diff: Optional diff data from comparing snapshots
 
     Returns:
         Path to generated HTML file
@@ -617,7 +710,7 @@ def render_dashboard(snapshot_path: str, output_path: str = "output/dashboard.ht
         snapshot = json.load(f)
 
     # Render dashboard
-    renderer = DashboardRenderer(snapshot)
+    renderer = DashboardRenderer(snapshot, diff)
     html = renderer.render()
 
     # Write to file

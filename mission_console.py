@@ -14,6 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent / 'src'))
 
 from collector_ocp import OCPCollector
 from html_renderer import render_dashboard
+from diff_engine import compare_snapshots, find_latest_snapshots
 import json
 
 
@@ -43,10 +44,45 @@ def main():
     print(f"\nSnapshot saved: {snapshot_file}")
     print()
 
-    # Step 2: Render dashboard
-    print("Step 2: Rendering dashboard...")
+    # Step 2: Detect changes
+    print("Step 2: Detecting changes...")
     print("-" * 70)
-    dashboard_file = render_dashboard(str(snapshot_file))
+    diff_data = None
+
+    # Find previous snapshot
+    previous_snapshots = find_latest_snapshots(count=2)
+
+    if len(previous_snapshots) >= 2:
+        # We have a previous snapshot to compare with
+        previous_snapshot = previous_snapshots[1]  # Second most recent (before current)
+        print(f"Comparing with: {Path(previous_snapshot).name}")
+
+        try:
+            diff_data = compare_snapshots(previous_snapshot, str(snapshot_file))
+
+            # Print summary
+            if diff_data:
+                changes = diff_data.get('changes', {})
+                critical_count = len(changes.get('critical', []))
+                important_count = len(changes.get('important', []))
+
+                if critical_count > 0:
+                    print(f"  🔴 {critical_count} critical change(s)")
+                if important_count > 0:
+                    print(f"  🟡 {important_count} important change(s)")
+                if critical_count == 0 and important_count == 0:
+                    print("  ✅ No significant changes detected")
+        except Exception as e:
+            print(f"  ⚠️  Change detection failed: {e}")
+    else:
+        print("  ℹ️  No previous snapshot found (first run)")
+
+    print()
+
+    # Step 3: Render dashboard
+    print("Step 3: Rendering dashboard...")
+    print("-" * 70)
+    dashboard_file = render_dashboard(str(snapshot_file), diff=diff_data)
 
     print()
     print("=" * 70)
