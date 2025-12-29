@@ -319,9 +319,26 @@ class DashboardRenderer:
 
     def _render_cp4i_status_card(self, installed: bool) -> str:
         """Render CP4I status card"""
-        cp4i_count = len(self.operators.get('cp4i', []))
+        cp4i_ops = self.operators.get('cp4i', [])
+
+        # Count unique operators (deduplicate by name+version)
+        unique_ops = {}
+        for op in cp4i_ops:
+            key = (op.get('display_name'), op.get('version'))
+            unique_ops[key] = op
+
+        unique_count = len(unique_ops)
+        total_count = len(cp4i_ops)
+
         status_class = 'green' if installed else 'yellow'
-        status_text = f"{cp4i_count} Capabilities" if installed else "Not Installed"
+
+        if installed and unique_count > 0:
+            if unique_count == total_count:
+                status_text = f"{unique_count} Capabilities"
+            else:
+                status_text = f"{unique_count} Capabilities"
+        else:
+            status_text = "Not Installed"
 
         return f"""<div class="metric-card">
         <div class="metric-label">CP4I Status</div>
@@ -478,25 +495,67 @@ class DashboardRenderer:
     </div>"""
 
     def _render_operators_table(self, operators: List[Dict]) -> str:
-        """Render operators table"""
+        """Render operators table with deduplication and grouping"""
+        # Group operators by name to avoid showing duplicates
+        from collections import defaultdict
+        grouped = defaultdict(list)
+
+        for op in operators:
+            key = (op.get('display_name', 'Unknown'), op.get('version', 'N/A'))
+            grouped[key].append(op)
+
         rows = ""
-        for op in operators[:20]:  # Limit to first 20
-            phase = op.get('phase', 'Unknown')
-            status_class = 'green' if phase == 'Succeeded' else 'yellow'
+        count = 0
+
+        # Sort by name
+        for (display_name, version), op_list in sorted(grouped.items()):
+            if count >= 15:  # Limit to 15 unique operators
+                break
+
+            # Get namespaces where this operator exists
+            namespaces = [op.get('namespace') for op in op_list]
+
+            # Focus on CP4I-relevant namespaces
+            cp4i_namespaces = [ns for ns in namespaces if
+                              'integration' in ns or 'ibm' in ns or 'cp4i' in ns]
+
+            if not cp4i_namespaces:
+                cp4i_namespaces = namespaces[:3]  # Show first 3 if none match
+
+            # Show primary namespace + count if multiple
+            if len(namespaces) == 1:
+                ns_display = namespaces[0]
+            elif len(cp4i_namespaces) <= 2:
+                ns_display = ", ".join(cp4i_namespaces)
+            else:
+                ns_display = f"{cp4i_namespaces[0]} (+{len(namespaces)-1} more)"
+
+            # Determine status
+            phases = [op.get('phase', 'Unknown') for op in op_list]
+            if all(p == 'Succeeded' for p in phases):
+                phase = 'Succeeded'
+                status_class = 'green'
+            elif any(p == 'Failed' for p in phases):
+                phase = 'Failed'
+                status_class = 'red'
+            else:
+                phase = phases[0]
+                status_class = 'yellow'
 
             rows += f"""<tr>
-            <td>{op.get('display_name', 'Unknown')}</td>
-            <td>{op.get('namespace', 'Unknown')}</td>
-            <td>{op.get('version', 'N/A')}</td>
+            <td>{display_name}</td>
+            <td>{ns_display}</td>
+            <td>{version}</td>
             <td><span class="status-badge status-{status_class}">{phase}</span></td>
         </tr>"""
+            count += 1
 
         return f"""<div class="table-container">
         <table>
             <thead>
                 <tr>
                     <th>Capability</th>
-                    <th>Namespace</th>
+                    <th>Namespace(s)</th>
                     <th>Version</th>
                     <th>Status</th>
                 </tr>
