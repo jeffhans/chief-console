@@ -1,0 +1,70 @@
+# CP4I Environment Profiles
+# Copy to environments.yaml and populate with your environment details
+# environments.yaml is gitignored for security
+
+environments:
+  # Example TechZone environment
+  techzone-demo-2025-01:
+    name: "TechZone CP4I Demo - January 2025"
+
+    # Metadata
+    created_date: "2025-01-15"
+    expires_date: "2025-01-22"  # TechZone typical 7-day reservation
+    description: "Demo environment for BTDS pipeline testing"
+    tags:
+      - techzone
+      - demo
+      - kafka-enabled
+
+    # OpenShift cluster details
+    cluster:
+      api_url: "https://api.demo.cp4i.example.com:6443"
+      console_url: "https://console-openshift-console.apps.demo.cp4i.example.com"
+
+      # Authentication (choose one method)
+      auth:
+        # Method 1: Token (recommended for TechZone)
+        token: "sha256~your-token-here"
+
+        # Method 2: Username/password
+        # username: "kubeadmin"
+        # password: "your-password-here"
+
+        # Method 3: Reference to kubeconfig file
+        # kubeconfig_path: "~/.kube/config"
+        # kubeconfig_context: "demo-cluster"
+
+    # CP4I Platform Navigator
+    platform_navigator:
+      url: "https://cpd-cp4i.apps.demo.cp4i.example.com"
+      username: "admin"
+      # password stored separately or in keyring
+
+    # Installed capabilities (auto-discovered but can be documented here)
+    capabilities:
+      - event-streams
+      - api-connect
+      - app-connect
+      - mq
+
+    # Event Streams / Kafka (if installed)
+    event_streams:
+      bootstrap_servers: "es-kafka-bootstrap-cp4i.apps.demo.cp4i.example.com:443"
+      # Additional Kafka credentials if needed
+
+    # Source information (for tracking)
+    source:
+      type: "pdf"  # pdf, manual, ui-export, etc.
+      file: "output/env-imports/techzone-2025-01-15.pdf"
+      imported_date: "2025-01-15T10:30:00Z"
+      imported_by: "mission-console-import"
+
+# Active environment (used by default)
+active: "techzone-demo-2025-01"
+
+# History of previous environments (for reference)
+history:
+  - name: "techzone-demo-2024-12"
+    archived_date: "2024-12-20"
+    reason: "TechZone reservation expired"
+    snapshot_location: "output/snapshots/archive/techzone-demo-2024-12/"

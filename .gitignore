@@ -44,6 +44,7 @@ snapshots/
 # Configuration (may contain sensitive data)
 config.local.yaml
 *.credentials
+environments.yaml
 
 # Logs
 *.log

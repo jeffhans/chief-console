@@ -1,0 +1,11 @@
+# Core dependencies
+PyYAML>=6.0
+PyPDF2>=3.0.0
+
+# OpenShift/Kubernetes (oc CLI wrapper if needed)
+# Note: Primarily uses oc CLI directly via subprocess
+
+# Future dependencies (when modules are implemented)
+# requests>=2.31.0        # For API calls
+# jinja2>=3.1.0          # For HTML template rendering
+# python-dateutil>=2.8.0  # For date handling

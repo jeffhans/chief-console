@@ -126,6 +126,7 @@ Optional:
 
 ### Modules
 
+- `env_manager.py` - Manages multiple environment profiles and credentials (PDF import, switching)
 - `collector_ocp.py` - Collects OpenShift and CP4I data via `oc`
 - `collector_kafka.py` - Collects Kafka topic and consumer signals (best effort)
 - `snapshot_store.py` - Persists snapshots and snapshot history
@@ -133,6 +134,7 @@ Optional:
 - `diff_engine.py` - Detects meaningful changes between snapshots
 - `html_renderer.py` - Renders the Mission Console dashboard
 - `config.yaml` - User-editable configuration (namespaces, topic naming rules, refresh cadence)
+- `environments.yaml` - Environment credentials and metadata (gitignored, use environments.example.yaml as template)
 
 ### Output Artifacts
 
@@ -142,16 +144,85 @@ Optional:
 
 ---
 
+## Environment Management
+
+### Managing Multiple CP4I Environments
+
+The Mission Console supports managing multiple ephemeral CP4I environments (e.g., TechZone reservations) with credential storage and metadata tracking.
+
+#### Quick Start
+
+1. **Import from PDF** (TechZone login info):
+   ```bash
+   python src/env_manager.py import ~/Downloads/techzone-login.pdf my-demo-env
+   ```
+
+2. **List environments**:
+   ```bash
+   python src/env_manager.py list
+   ```
+
+3. **Get login command**:
+   ```bash
+   python src/env_manager.py login
+   ```
+
+4. **Switch active environment**:
+   ```bash
+   python src/env_manager.py activate another-env
+   ```
+
+#### Environment Profile Schema
+
+Environments are stored in `environments.yaml` (gitignored for security). Each profile includes:
+
+- **Metadata**: Name, creation date, expiration date, tags
+- **Cluster details**: API URL, console URL, authentication (token/username/password)
+- **Platform Navigator**: URL and credentials
+- **Installed capabilities**: Event Streams, API Connect, App Connect, MQ, etc.
+- **Source tracking**: PDF import metadata, import date
+
+#### PDF Import
+
+The tool can extract login credentials from TechZone/OpenShift PDF exports:
+
+```bash
+python src/env_manager.py import path/to/login.pdf
+```
+
+Extracted information:
+- Cluster API URL
+- Console URL
+- Authentication token or username/password
+- Platform Navigator URL (if present)
+
+PDFs are archived in `output/env-imports/` for reference.
+
+#### Manual Configuration
+
+Copy `environments.example.yaml` to `environments.yaml` and edit:
+
+```bash
+cp environments.example.yaml environments.yaml
+```
+
+---
+
 ## Project Structure
 
 ```
 mission-console/
 ├── src/                    # Python source modules
+│   └── env_manager.py      # Environment management
 ├── templates/              # HTML templates
 ├── output/                 # Generated artifacts (gitignored)
 │   ├── snapshots/
-│   └── assets/
-├── config.yaml            # Configuration file
+│   ├── assets/
+│   └── env-imports/        # Archived PDF imports
+├── config.yaml             # Application configuration
+├── environments.yaml       # Environment credentials (gitignored)
+├── environments.example.yaml  # Template for environments.yaml
+├── requirements.txt        # Python dependencies
 └── README.md
 ```
 
