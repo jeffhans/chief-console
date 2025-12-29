@@ -63,13 +63,14 @@ class EnvironmentManager:
             self.active_env = env_name
         self.save()
 
-    def import_from_pdf(self, pdf_path: str, env_name: Optional[str] = None) -> str:
+    def import_from_pdf(self, pdf_path: str, env_name: Optional[str] = None, move_file: bool = False) -> str:
         """
         Import environment credentials from a TechZone/cluster PDF export
 
         Args:
             pdf_path: Path to the PDF file
             env_name: Optional name for the environment (auto-generated if not provided)
+            move_file: If True, move the PDF to archive instead of copying (default: False)
 
         Returns:
             The name of the created environment
@@ -106,7 +107,7 @@ class EnvironmentManager:
             env_data['created_date'] = datetime.now().strftime('%Y-%m-%d')
 
         # Save imported PDF to archive
-        self._archive_pdf(pdf_path, env_name)
+        self._archive_pdf(pdf_path, env_name, move_file)
 
         # Add to environments
         self.add_environment(env_name, env_data)
@@ -139,32 +140,60 @@ class EnvironmentManager:
         }
 
         # Common patterns for OpenShift cluster info
+        # Try TechZone format first, then OAuth format
         patterns = {
-            'api_url': r'(?:API URL|Server|Cluster API):\s*([https://][\w\.-]+(?::\d+)?)',
-            'console_url': r'(?:Console URL|Web Console):\s*([https://][\w\.-]+)',
-            'token': r'(?:Login token|Token):\s*(sha256~[\w-]+)',
-            'username': r'(?:Username|User):\s*(\w+)',
-            'password': r'(?:Password):\s*([^\s\n]+)',
-            'platform_nav_url': r'(?:Platform Navigator|Navigator URL):\s*([https://][\w\.-]+)',
+            # API URL patterns
+            'api_url': [
+                r'API URL\s+(https://[^\s]+)',  # TechZone: "API URL https://..."
+                r'--server=(https://[^\s]+)',    # OAuth: "--server=https://..."
+            ],
+            # Console URL patterns
+            'console_url': [
+                r'OCP Console\s+(https://[^\s]+)',  # TechZone: "OCP Console https://..."
+                r'Desktop url:\s+(https://[^\s]+)', # TechZone: "Desktop url: https://..."
+                r'(?:Console URL|Web Console)[:\s]+(https://[^\s]+)',
+            ],
+            # Token pattern (OAuth format)
+            'token': [
+                r'--token=(sha256~[\w-]+)',      # OAuth: "--token=sha256~..."
+                r'Your API token is\s+(sha256~[\w-]+)',  # OAuth display
+            ],
+            # Username patterns (prefer Cluster Admin)
+            'username': [
+                r'Cluster Admin Username\s+(\w+)',  # TechZone: "Cluster Admin Username kubeadmin"
+                r'Username\s+(\w+)',                 # Generic
+            ],
+            # Password patterns (prefer Cluster Admin)
+            'password': [
+                r'Cluster Admin Password\s+([^\s\n]+)',  # TechZone: "Cluster Admin Password xxx"
+                r'Password\s+([^\s\n]+)',                # Generic
+            ],
+            # Platform Navigator
+            'platform_nav_url': [
+                r'(?:Platform Navigator|Navigator URL)[:\s]+(https://[^\s]+)',
+            ],
         }
 
-        for key, pattern in patterns.items():
-            match = re.search(pattern, text, re.IGNORECASE)
-            if match:
-                value = match.group(1).strip()
+        for key, pattern_list in patterns.items():
+            # Try each pattern until we find a match
+            for pattern in pattern_list:
+                match = re.search(pattern, text, re.IGNORECASE)
+                if match:
+                    value = match.group(1).strip()
 
-                if key in ['api_url', 'console_url']:
-                    env_data['cluster'][key] = value
-                elif key in ['token', 'username', 'password']:
-                    if 'auth' not in env_data['cluster']:
-                        env_data['cluster']['auth'] = {}
-                    env_data['cluster']['auth'][key] = value
-                elif key == 'platform_nav_url':
-                    env_data['platform_navigator']['url'] = value
+                    if key in ['api_url', 'console_url']:
+                        env_data['cluster'][key] = value
+                    elif key in ['token', 'username', 'password']:
+                        if 'auth' not in env_data['cluster']:
+                            env_data['cluster']['auth'] = {}
+                        env_data['cluster']['auth'][key] = value
+                    elif key == 'platform_nav_url':
+                        env_data['platform_navigator']['url'] = value
+                    break  # Stop after first match
 
         return env_data
 
-    def _archive_pdf(self, pdf_path: Path, env_name: str) -> None:
+    def _archive_pdf(self, pdf_path: Path, env_name: str, move_file: bool = False) -> None:
         """Archive the imported PDF for future reference"""
         import shutil
 
@@ -172,7 +201,11 @@ class EnvironmentManager:
         archive_dir.mkdir(parents=True, exist_ok=True)
 
         archive_path = archive_dir / f"{env_name}_{pdf_path.name}"
-        shutil.copy2(pdf_path, archive_path)
+
+        if move_file:
+            shutil.move(pdf_path, archive_path)
+        else:
+            shutil.copy2(pdf_path, archive_path)
 
     def get_oc_login_command(self, env_name: Optional[str] = None) -> str:
         """Generate the oc login command for an environment"""
@@ -226,7 +259,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage:")
         print("  python env_manager.py list")
-        print("  python env_manager.py import <pdf_path> [env_name]")
+        print("  python env_manager.py import <pdf_path> [env_name] [--move]")
         print("  python env_manager.py activate <env_name>")
         print("  python env_manager.py login [env_name]")
         sys.exit(1)
@@ -249,9 +282,20 @@ if __name__ == "__main__":
             print("Error: PDF path required")
             sys.exit(1)
         pdf_path = sys.argv[2]
-        env_name = sys.argv[3] if len(sys.argv) > 3 else None
-        imported_name = manager.import_from_pdf(pdf_path, env_name)
+
+        # Parse optional arguments
+        env_name = None
+        move_file = False
+        for arg in sys.argv[3:]:
+            if arg == "--move":
+                move_file = True
+            elif not env_name:
+                env_name = arg
+
+        imported_name = manager.import_from_pdf(pdf_path, env_name, move_file)
+        action = "Moved" if move_file else "Copied"
         print(f"Imported environment: {imported_name}")
+        print(f"{action} PDF to: output/env-imports/{imported_name}_{Path(pdf_path).name}")
         print(f"Set as active. Use 'python env_manager.py login' to connect.")
 
     elif command == "activate":

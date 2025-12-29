@@ -45,6 +45,7 @@ snapshots/
 config.local.yaml
 *.credentials
 environments.yaml
+access/
 
 # Logs
 *.log
