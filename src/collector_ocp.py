@@ -20,13 +20,14 @@ class OCPCollector:
         self.errors = []
         self.warnings = []
 
-    def _run_oc(self, args: List[str], output_format: str = "json") -> Optional[Any]:
+    def _run_oc(self, args: List[str], output_format: str = "json", timeout: int = 30) -> Optional[Any]:
         """
         Run oc command and return parsed output
 
         Args:
             args: Command arguments (without 'oc')
             output_format: Output format (json, yaml, or raw)
+            timeout: Command timeout in seconds (default: 30)
 
         Returns:
             Parsed output or None on error
@@ -41,7 +42,7 @@ class OCPCollector:
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=30
+                timeout=timeout
             )
 
             if result.returncode != 0:
@@ -212,7 +213,7 @@ class OCPCollector:
         else:
             cmd.append("--all-namespaces")
 
-        csv_data = self._run_oc(cmd)
+        csv_data = self._run_oc(cmd, timeout=90)
         if not csv_data or 'items' not in csv_data:
             return []
 
