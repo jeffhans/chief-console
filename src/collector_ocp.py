@@ -179,20 +179,40 @@ class OCPCollector:
         ]
 
         all_namespaces = self.collect_namespaces()
-        cp4i_namespaces = []
+        cp4i_namespace_set = set()
 
         for ns in all_namespaces:
             # Check name patterns
             for pattern in cp4i_patterns:
                 if re.search(pattern, ns['name'], re.IGNORECASE):
-                    cp4i_namespaces.append(ns['name'])
+                    cp4i_namespace_set.add(ns['name'])
                     break
             else:
-                # Check labels
+                # Check labels (both keys and values)
                 labels = ns.get('labels', {})
+                # Check label keys
                 if any('cp4i' in k.lower() or 'integration' in k.lower() for k in labels.keys()):
-                    cp4i_namespaces.append(ns['name'])
+                    cp4i_namespace_set.add(ns['name'])
+                # Check label values
+                elif any('cp4i' in str(v).lower() or 'integration' in str(v).lower() for v in labels.values()):
+                    cp4i_namespace_set.add(ns['name'])
 
+        # Also include namespaces hosting key CP4I custom resources (handles generic names like "tools")
+        cr_kinds = [
+            "eventstreams",
+            "eventprocessing",
+            "platformnavigator",
+            "eventendpointmanagement",
+        ]
+        for kind in cr_kinds:
+            cr_data = self._run_oc(["get", kind, "--all-namespaces"])
+            if cr_data and 'items' in cr_data:
+                for item in cr_data['items']:
+                    ns_name = item['metadata'].get('namespace')
+                    if ns_name:
+                        cp4i_namespace_set.add(ns_name)
+
+        cp4i_namespaces = sorted(cp4i_namespace_set)
         if not cp4i_namespaces:
             self.warnings.append("No CP4I namespaces discovered. Cluster may not have CP4I installed.")
 
@@ -213,7 +233,8 @@ class OCPCollector:
         else:
             cmd.append("--all-namespaces")
 
-        csv_data = self._run_oc(cmd, timeout=90)
+        # CSV listing can be slow; allow a longer timeout
+        csv_data = self._run_oc(cmd, timeout=180)
         if not csv_data or 'items' not in csv_data:
             return []
 
@@ -233,7 +254,7 @@ class OCPCollector:
             display_name = op_info['display_name'].lower()
             op_info['is_cp4i'] = any(
                 keyword in display_name
-                for keyword in ['cp4i', 'integration', 'navigator', 'event streams',
+                for keyword in ['cp4i', 'integration', 'navigator', 'event streams', 'event processing',
                                 'api connect', 'app connect', 'mq', 'aspera', 'datapower']
             )
 
@@ -274,6 +295,9 @@ class OCPCollector:
                 'restarts': self._count_restarts(pod),
                 'age': pod['metadata'].get('creationTimestamp'),
                 'node': pod['spec'].get('nodeName'),
+                'labels': pod['metadata'].get('labels', {}),
+                'annotations': pod['metadata'].get('annotations', {}),
+                'resources': self._get_pod_resources(pod),
             }
 
             pods.append(pod_info)
@@ -291,6 +315,79 @@ class OCPCollector:
         """Count total restarts across all containers in a pod"""
         container_statuses = pod['status'].get('containerStatuses', [])
         return sum(c.get('restartCount', 0) for c in container_statuses)
+
+    def _get_pod_resources(self, pod: Dict) -> Dict[str, Any]:
+        """Extract resource requests and limits from pod"""
+        containers = pod['spec'].get('containers', [])
+
+        total_cpu_requests = 0
+        total_cpu_limits = 0
+        total_memory_requests = 0
+        total_memory_limits = 0
+
+        for container in containers:
+            resources = container.get('resources', {})
+            requests = resources.get('requests', {})
+            limits = resources.get('limits', {})
+
+            # Parse CPU (can be in cores like "1" or millicores like "500m")
+            cpu_request = self._parse_cpu(requests.get('cpu', '0'))
+            cpu_limit = self._parse_cpu(limits.get('cpu', '0'))
+
+            # Parse memory (can be in various units: Gi, Mi, Ki, bytes)
+            mem_request = self._parse_memory(requests.get('memory', '0'))
+            mem_limit = self._parse_memory(limits.get('memory', '0'))
+
+            total_cpu_requests += cpu_request
+            total_cpu_limits += cpu_limit
+            total_memory_requests += mem_request
+            total_memory_limits += mem_limit
+
+        return {
+            'cpu_requests': total_cpu_requests,  # in cores
+            'cpu_limits': total_cpu_limits,      # in cores
+            'memory_requests': total_memory_requests,  # in bytes
+            'memory_limits': total_memory_limits,      # in bytes
+        }
+
+    def _parse_cpu(self, cpu_str: str) -> float:
+        """Parse CPU string to cores (float)"""
+        if not cpu_str or cpu_str == '0':
+            return 0.0
+
+        cpu_str = str(cpu_str).strip()
+
+        if cpu_str.endswith('m'):
+            # Millicores: 500m = 0.5 cores
+            return float(cpu_str[:-1]) / 1000.0
+        else:
+            # Cores: 2 = 2.0 cores
+            return float(cpu_str)
+
+    def _parse_memory(self, mem_str: str) -> int:
+        """Parse memory string to bytes (int)"""
+        if not mem_str or mem_str == '0':
+            return 0
+
+        mem_str = str(mem_str).strip()
+
+        units = {
+            'Ki': 1024,
+            'Mi': 1024 ** 2,
+            'Gi': 1024 ** 3,
+            'Ti': 1024 ** 4,
+            'K': 1000,
+            'M': 1000 ** 2,
+            'G': 1000 ** 3,
+            'T': 1000 ** 4,
+        }
+
+        for unit, multiplier in units.items():
+            if mem_str.endswith(unit):
+                return int(float(mem_str[:-len(unit)]) * multiplier)
+
+        # No unit, assume bytes
+        return int(mem_str)
 
     def collect_routes(self, namespace: Optional[str] = None) -> List[Dict[str, Any]]:
         """Collect routes for deep linking"""

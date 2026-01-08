@@ -2,8 +2,15 @@
 
 # OpenShift / CP4I Settings
 cluster:
-  # Namespaces to monitor (leave empty to auto-discover CP4I namespaces)
-  namespaces: []
+  # Namespaces to monitor (explicit list helps avoid heuristic misses)
+  namespaces:
+    - cp4i-nav
+    - cp4i-es
+    - cp4i-ep
+    - cp4i-eem
+    - cp4i-ace
+    - cp4i-mq
+    - cp4i-tools
 
   # Auto-discover namespaces with these labels
   auto_discover_labels:
@@ -62,3 +69,16 @@ output:
   dashboard_path: "output/dashboard.html"
   snapshots_path: "output/snapshots"
   assets_path: "output/assets"
+
+# Optional: map cluster IDs to friendly names for dashboards/snapshots
+cluster_aliases:
+  # You can use a simple string or a dict with name/id to show in the header
+  "6951b7cb795b799e371a711f.am1.techzone.ibm.com":
+    name: "CP4I Demo Dashboard"
+    id: "6951b7cb795b799e371a711f"
+  "695812b543da3d2f055c8c51.am1.techzone.ibm.com":
+    name: "Healthcare Demo - CP4I"
+    id: "695812b543da3d2f055c8c51"
+  "695d56e85f9f54d9fcc13a4a.am1.techzone.ibm.com":
+    name: "CP4I AI-Setup Testing"
+    id: "695d56e85f9f54d9fcc13a4a"

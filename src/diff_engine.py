@@ -289,7 +289,13 @@ class SnapshotDiff:
 
     def _categorize_changes(self):
         """Categorize changes by priority"""
+        # Get CP4I namespaces from current snapshot
+        cp4i_namespaces = self.current.get('cp4i_namespaces', [])
+
         for change in self.changes['additions'] + self.changes['modifications'] + self.changes['deletions']:
+            # Check if change is in a CP4I namespace
+            in_cp4i_namespace = change.get('namespace') in cp4i_namespaces
+
             # Critical changes
             if (change.get('severity') == 'critical' or
                 change.get('type') == 'node' and change.get('new_status') != 'Ready' or
@@ -301,7 +307,9 @@ class SnapshotDiff:
                   change.get('type') in ['event_streams', 'kafka_topic'] or
                   change.get('type') == 'operator' and change.get('is_cp4i') or
                   change.get('type') == 'namespace' and change.get('is_cp4i') or
-                  change.get('type') == 'pod' and change.get('action') == 'restarted'):
+                  change.get('type') == 'pod' and change.get('action') == 'restarted' or
+                  change.get('type') == 'pod' and in_cp4i_namespace or
+                  change.get('type') == 'route' and in_cp4i_namespace):
                 self.changes['important'].append(change)
 
             # Informational

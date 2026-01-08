@@ -1,0 +1,197 @@
+# Resource Categorization Configuration
+# This file defines how resources are categorized for licensing, criticality, and workload identification
+
+# Licensing Categories
+licensing:
+  # Products that consume CP4I licenses
+  cp4i_licensed:
+    patterns:
+      - "ibm-eventstreams.*"
+      - "ibm-ep.*"
+      - "ibm-eventprocessing.*"
+      - "ibm-appconnect.*"
+      - "ibm-mq.*"
+      - "ibm-apiconnect.*"
+      - "ibm-aspera.*"
+      - "ibm-datapower.*"
+      - ".*-ibm-es-.*"  # Event Streams components
+      - ".*-ibm-ep-.*"  # Event Processing components
+
+    # Specific resource types that are licensed workloads
+    resource_types:
+      - "EventStreams"
+      - "EventProcessing"
+      - "FlinkDeployment"
+      - "IntegrationServer"
+      - "QueueManager"
+
+  # OpenShift platform (included in cluster license)
+  openshift_platform:
+    patterns:
+      - "openshift-.*"
+      - "kube-.*"
+      - "ovn-.*"
+      - "multus-.*"
+      - "dns-.*"
+      - "ingress-.*"
+    namespaces:
+      - "openshift-*"
+      - "kube-*"
+      - "default"
+
+  # Free/Open Source
+  free:
+    patterns:
+      - "prometheus-.*"
+      - "grafana-.*"
+      - "alertmanager-.*"
+
+# Criticality Tiers
+criticality:
+  critical:
+    # Cannot function without these
+    patterns:
+      - ".*controller.*"
+      - ".*master.*"
+      - ".*etcd.*"
+      - ".*api.*server.*"
+
+    pod_patterns:
+      - ".*-controller-.*"  # Event Streams/Kafka controllers
+      - "kube-apiserver.*"
+      - "etcd.*"
+
+    namespaces:
+      - "openshift-kube-apiserver"
+      - "openshift-etcd"
+      - "openshift-kube-controller-manager"
+
+    custom_resources:
+      # Production Event Streams and Event Processing instances
+      - type: "EventStreams"
+        pattern: ".*-platform$"
+      - type: "EventProcessing"
+        namespace: "integration-platform"
+
+  important:
+    # Operationally important
+    patterns:
+      - ".*-operator.*"
+      - ".*-metrics.*"
+      - ".*-monitoring.*"
+      - ".*-logging.*"
+      - "platform-navigator.*"
+
+    namespaces:
+      - "openshift-monitoring"
+      - "openshift-logging"
+      - "integration-platform"
+
+    labels:
+      environment:
+        - "production"
+        - "prod"
+
+  optional:
+    # Nice to have
+    patterns:
+      - ".*-demo.*"
+      - ".*-test.*"
+      - ".*-dev.*"
+      - "curl-.*"
+
+    namespaces:
+      - "tools"
+
+    labels:
+      environment:
+        - "demo"
+        - "test"
+        - "dev"
+      demo:
+        - "true"
+
+# Workload Identification
+workloads:
+  # These ARE business workloads
+  business_workload_patterns:
+    - "healthcare-.*"
+    - ".*-enricher.*"
+    - ".*-processor.*"
+    - "claims-.*"
+    - "fhir-.*"
+    - "npi-.*"
+
+  business_workload_labels:
+    demo: "true"
+    app.kubernetes.io/component:
+      - "event-processing"
+      - "analytics"
+      - "integration"
+      - "processor"
+
+  # These are NOT workloads (infrastructure/platform)
+  infrastructure_patterns:
+    - ".*-operator.*"
+    - ".*-controller.*"
+    - ".*-registry.*"
+    - ".*-metrics.*"
+    - ".*-monitoring.*"
+    - ".*-ui$"
+    - ".*-api$"
+    - ".*-admapi.*"
+    - ".*-recapi.*"
+    - "ovn-.*"
+    - "dns-.*"
+    - "ingress-.*"
+    - "router-.*"
+
+  infrastructure_namespaces:
+    - "openshift-*"
+    - "kube-*"
+    - "openshift-monitoring"
+    - "openshift-logging"
+    - "openshift-marketplace"
+
+# Resource Utilization Thresholds
+resource_thresholds:
+  cpu:
+    over_provisioned: 0.3  # Using < 30% of requested
+    under_provisioned: 0.9  # Using > 90% of requested
+    efficient_min: 0.4      # 40-80% is efficient range
+    efficient_max: 0.8
+
+  memory:
+    over_provisioned: 0.3
+    under_provisioned: 0.85
+    efficient_min: 0.5
+    efficient_max: 0.8
+
+# VPC (Virtual Processor Core) Calculation
+vpc_calculation:
+  # CP4I licensing is based on cores allocated to CP4I workloads
+  # 1 VPC = 1 core (CPU)
+
+  counted_components:
+    - "Event Streams brokers"
+    - "Event Processing pods"
+    - "App Connect integration servers"
+    - "MQ queue managers"
+    - "API Connect gateways"
+    - "Platform Navigator"
+
+  # Map container names to licensing
+  container_patterns:
+    event_streams:
+      - "kafka"
+      - "ibm-es-kafka"
+      - "zookeeper"
+
+    event_processing:
+      - "backend"
+      - "ui"
+      - "flink-main-container"
+
+    platform:
+      - "navigator"
+      - "integration-platform-navigator"

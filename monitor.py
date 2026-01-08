@@ -13,6 +13,11 @@ import os
 from pathlib import Path
 from datetime import datetime
 import argparse
+import yaml
+
+# Add src to path for cluster utils
+sys.path.insert(0, str(Path(__file__).parent / 'src'))
+from cluster_utils import get_cluster_info, format_cluster_name
 
 
 class MissionConsoleMonitor:
@@ -37,11 +42,50 @@ class MissionConsoleMonitor:
         self.last_important = 0
         self.run_durations = []  # Track run times for statistics
 
+        # Get cluster info
+        self.cluster_info = get_cluster_info()
+        self.cluster_id = self.cluster_info.get('cluster_id')
+        self.cluster_name = format_cluster_name(self.cluster_id) if self.cluster_id else 'Unknown'
+
+        # Load aliases from config.yaml
+        self.cluster_alias = None
+        self.cluster_alias_id = None
+        config_path = Path(__file__).parent / "config.yaml"
+        if config_path.exists():
+            try:
+                with open(config_path, "r") as f:
+                    config = yaml.safe_load(f) or {}
+                aliases = config.get("cluster_aliases", {}) or {}
+                alias_entry = aliases.get(self.cluster_id)
+                if isinstance(alias_entry, dict):
+                    self.cluster_alias = alias_entry.get("name")
+                    self.cluster_alias_id = alias_entry.get("id")
+                elif isinstance(alias_entry, str):
+                    self.cluster_alias = alias_entry
+            except Exception:
+                pass
+
     def run(self):
         """Run the monitoring loop"""
         print("=" * 70)
         print("CP4I MISSION CONSOLE - AUTOMATED MONITORING")
         print("=" * 70)
+
+        # Display cluster info
+        if self.cluster_info.get('logged_in'):
+            if self.cluster_alias:
+                print(f"📍 Name: {self.cluster_alias}")
+            if self.cluster_alias_id:
+                print(f"   ID: {self.cluster_alias_id}")
+            print(f"📍 Cluster ID: {self.cluster_info.get('server').replace('https://api.','').split(':')[0] if self.cluster_info.get('server') else self.cluster_name}")
+            print(f"   Server: {self.cluster_info.get('server')}")
+            print(f"   User: {self.cluster_info.get('user')}")
+        else:
+            print("❌ ERROR: Not logged into OpenShift cluster")
+            print("   Run: oc login --server=... --token=...")
+            return
+
+        print()
         print(f"Monitoring interval: {self.interval} seconds ({self.interval//60} minutes)")
         print(f"Auto-open dashboard: {'Yes' if self.auto_open else 'No'}")
         print(f"Max runs: {'Unlimited' if self.max_runs == 0 else self.max_runs}")
@@ -152,8 +196,14 @@ class MissionConsoleMonitor:
             print(f"❌ Error during collection #{self.run_count}: {e}")
 
     def _open_dashboard(self):
-        """Open dashboard in browser"""
-        dashboard_path = Path("output/dashboard.html").absolute()
+        """Open dashboard in browser (cluster-aware)"""
+        # Use cluster-specific dashboard path
+        if self.cluster_id:
+            dashboard_path = Path("output") / self.cluster_id / "dashboard.html"
+        else:
+            dashboard_path = Path("output/dashboard.html")
+
+        dashboard_path = dashboard_path.absolute()
 
         if dashboard_path.exists():
             try:
@@ -166,6 +216,8 @@ class MissionConsoleMonitor:
                 print(f"   📊 Dashboard opened: {dashboard_path}")
             except Exception as e:
                 print(f"   ⚠️  Could not open dashboard: {e}")
+        else:
+            print(f"   ⚠️  Dashboard not found: {dashboard_path}")
 
     def _show_run_stats(self, run_duration: float):
         """Display run duration and statistics"""
