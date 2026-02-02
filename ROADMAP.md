@@ -1,4 +1,4 @@
-# CP4I Mission Console - Roadmap & Enhancement Backlog
+# CP4I Chief Console - Roadmap & Enhancement Backlog
 
 Living document tracking all proposed enhancements, organized by priority and status.
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Mission Console now features a **hierarchical "What Changed" view** with **deep links to CP4I dashboards** in the OpenShift Console. This enhancement makes it easy to see all changes in your cluster and quickly navigate to the relevant resources in the OpenShift Console.
+The Chief Console now features a **hierarchical "What Changed" view** with **deep links to CP4I dashboards** in the OpenShift Console. This enhancement makes it easy to see all changes in your cluster and quickly navigate to the relevant resources in the OpenShift Console.
 
 ## Features
 
@@ -113,7 +113,7 @@ Each change type has clear visual indicators:
 
 ## Usage
 
-### Automatic in Mission Console
+### Automatic in Chief Console
 
 The enhanced view is automatically included when you run:
 

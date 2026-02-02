@@ -138,7 +138,7 @@ Optional:
 - `snapshot_store.py` - Persists snapshots and snapshot history
 - `profile_builder.py` - Converts raw data into entity activity profiles
 - `diff_engine.py` - Detects meaningful changes between snapshots
-- `html_renderer.py` - Renders the Mission Console dashboard
+- `html_renderer.py` - Renders the Chief Console dashboard
 - `config.yaml` - User-editable configuration (namespaces, topic naming rules, refresh cadence)
 - `environments.yaml` - Environment credentials and metadata (gitignored, use environments.example.yaml as template)
 
@@ -154,7 +154,7 @@ Optional:
 
 ### Managing Multiple CP4I Environments
 
-The Mission Console supports managing multiple ephemeral CP4I environments (e.g., TechZone reservations) with credential storage and metadata tracking.
+The Chief Console supports managing multiple ephemeral CP4I environments (e.g., TechZone reservations) with credential storage and metadata tracking.
 
 #### Quick Start
 
@@ -216,7 +216,7 @@ cp environments.example.yaml environments.yaml
 
 ## Local Configuration Overrides
 
-The Mission Console supports local configuration overrides for personal settings without modifying the base `config.yaml` file.
+The Chief Console supports local configuration overrides for personal settings without modifying the base `config.yaml` file.
 
 ### Quick Start
 
@@ -298,7 +298,7 @@ chief-console/
 
 ## Primary Outcome
 
-A **portable CP4I Mission Console prototype** that proves:
+A **portable CP4I Chief Console prototype** that proves:
 
 - Entity-based summarization is the right abstraction
 - "Activity Profiles" scale across integration technologies

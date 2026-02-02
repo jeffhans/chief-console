@@ -151,7 +151,7 @@ You see:
 ```
 
 **This is HUGE for troubleshooting:**
-- See the change in Mission Console
+- See the change in Chief Console
 - Click once to investigate in OpenShift Console
 - No manual searching for resources
 - No copying/pasting names
@@ -206,7 +206,7 @@ Imagine you install IBM Event Streams. Here's what you see:
 ## Navigation Workflow
 
 ### Typical workflow with OLD view:
-1. See change in Mission Console: "Pod my-pod restarted"
+1. See change in Chief Console: "Pod my-pod restarted"
 2. Open browser
 3. Go to OpenShift Console
 4. Navigate to Projects → integration-platform
@@ -216,7 +216,7 @@ Imagine you install IBM Event Streams. Here's what you see:
 8. **Total: ~7 steps, 30-60 seconds**
 
 ### Typical workflow with NEW view:
-1. See change in Mission Console: "my-pod restarted [🔗 View]"
+1. See change in Chief Console: "my-pod restarted [🔗 View]"
 2. Click [🔗 View]
 3. **Total: 2 steps, 2 seconds**
 

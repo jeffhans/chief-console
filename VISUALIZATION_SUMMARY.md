@@ -1,8 +1,8 @@
-# Mission Console: Hierarchical Visualization Summary
+# Chief Console: Hierarchical Visualization Summary
 
 ## What We Built
 
-You now have a **comprehensive hierarchical "What Changed" view** with **deep links to CP4I dashboards** in your Mission Console!
+You now have a **comprehensive hierarchical "What Changed" view** with **deep links to CP4I dashboards** in your Chief Console!
 
 ## Key Features
 
@@ -115,7 +115,7 @@ Every change is shown in context:
 - Direct link to view it in OpenShift Console
 
 ### Quick Navigation
-From Mission Console to OpenShift Console in **one click**:
+From Chief Console to OpenShift Console in **one click**:
 1. See change: "my-pod restarted 5x"
 2. Click `[🔗 View]`
 3. **Instantly** see pod logs, events, and details

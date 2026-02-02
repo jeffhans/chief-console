@@ -5,12 +5,12 @@
 \margl1440\margr1440\vieww11520\viewh8400\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-\f0\fs24 \cf0 # CP4I Mission Console \'96 Dashboard-First Prototype\
+\f0\fs24 \cf0 # CP4I Chief Console \'96 Dashboard-First Prototype\
 \
 ## Project Objective\
 \
 Build a **reusable, dashboard-centric prototype** that summarizes a CP4I (Cloud Pak for Integration) environment using **Entity Activity Profiles**.  \
-The prototype is driven by a **desktop Python script** that collects data from an OpenShift / CP4I instance (via local `oc` context), generates structured summaries, and renders a **single HTML \'93Mission Console\'94 dashboard**.\
+The prototype is driven by a **desktop Python script** that collects data from an OpenShift / CP4I instance (via local `oc` context), generates structured summaries, and renders a **single HTML \'93Chief Console\'94 dashboard**.\
 \
 This is intentionally **dashboard-first** and **out-of-cluster** to survive TechZone churn and accelerate iteration. In-cluster operators and long-lived services are explicitly out of scope for v1.\
 \
@@ -216,7 +216,7 @@ Links should be dynamically discovered via Routes wherever possible.\
   Detects meaningful changes between snapshots\
 \
 - `html_renderer.py`  \
-  Renders the Mission Console dashboard\
+  Renders the Chief Console dashboard\
 \
 - `config.yaml`  \
   User-editable configuration:\
@@ -282,7 +282,7 @@ AI must remain grounded in collected data and cite sources internally.\
 \
 ## Primary Outcome\
 \
-A **portable CP4I Mission Console prototype** that proves:\
+A **portable CP4I Chief Console prototype** that proves:\
 \
 - Entity-based summarization is the right abstraction\
 - \'93Activity Profiles\'94 scale across integration technologies\

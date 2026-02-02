@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-about: Report a bug or issue with the Mission Console
+about: Report a bug or issue with the Chief Console
 title: '[BUG] '
 labels: bug
 assignees: ''
@@ -30,7 +30,7 @@ What actually happened instead.
 - **Python Version:** [e.g., 3.9.7]
 - **OpenShift Version:** [e.g., 4.12]
 - **CP4I Version:** [e.g., 2023.4]
-- **Mission Console Version/Commit:** [e.g., v1.0.0 or commit hash]
+- **Chief Console Version/Commit:** [e.g., v1.0.0 or commit hash]
 
 ## Configuration
 

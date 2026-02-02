@@ -1,4 +1,4 @@
-# CP4I Mission Console - Monitoring Guide
+# CP4I Chief Console - Monitoring Guide
 
 Automated monitoring options for tracking CP4I installation and ongoing cluster health.
 
@@ -125,7 +125,7 @@ kill <PID>
 
 ```
 ======================================================================
-CP4I MISSION CONSOLE - AUTOMATED MONITORING
+CP4I CHIEF CONSOLE - AUTOMATED MONITORING
 ======================================================================
 Monitoring interval: 120 seconds (2 minutes)
 Auto-open dashboard: Yes

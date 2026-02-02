@@ -6,7 +6,7 @@
 # Perfect for watching CP4I install in real-time.
 #
 
-echo "Starting CP4I Mission Console Monitoring..."
+echo "Starting CP4I Chief Console Monitoring..."
 echo ""
 echo "This will:"
 echo "  - Run collection every 2 minutes"

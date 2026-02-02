@@ -71,7 +71,7 @@ cp ENVIRONMENT_TAXONOMY.md "${TEMP_DIR}/" 2>/dev/null || true
 cat > "${TEMP_DIR}/START_HERE.txt" << 'EOF'
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
-║            CP4I MISSION CONSOLE                                   ║
+║            CP4I CHIEF CONSOLE                                   ║
 ║            Dashboard for OpenShift / CP4I Environments            ║
 ║                                                                   ║
 ╚═══════════════════════════════════════════════════════════════════╝
@@ -121,7 +121,7 @@ EOF
 
 # Create .gitignore for recipient
 cat > "${TEMP_DIR}/.gitignore" << 'EOF'
-# Mission Console - Files to ignore
+# Chief Console - Files to ignore
 
 # Output directory (contains cluster-specific data)
 output/

@@ -1,6 +1,6 @@
-# Contributing to CP4I Mission Console
+# Contributing to CP4I Chief Console
 
-Thank you for your interest in contributing to the CP4I Mission Console! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the CP4I Chief Console! This document provides guidelines and instructions for contributing.
 
 ## Table of Contents
 
@@ -169,4 +169,4 @@ If you have questions about contributing, feel free to:
 - Open an issue with the "question" label
 - Reach out to maintainers
 
-Thank you for contributing to CP4I Mission Console! 🚀
+Thank you for contributing to CP4I Chief Console! 🚀

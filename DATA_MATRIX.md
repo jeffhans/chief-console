@@ -1,6 +1,6 @@
 # CP4I Data Availability Matrix
 
-A comprehensive comparison of what data is available where, and opportunities for Mission Console to provide unique insights.
+A comprehensive comparison of what data is available where, and opportunities for Chief Console to provide unique insights.
 
 **Legend:**
 - ✅ Easily accessible
@@ -12,7 +12,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 🏗️ **CLUSTER INFRASTRUCTURE**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **Cluster version** | ✅ | ❌ | ✅ | | |
 | **Node count** | ✅ | ❌ | ✅ | | |
@@ -32,7 +32,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 🔧 **OPERATORS & CAPABILITIES**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **Installed operators** | ✅ | ❌ | ✅ | | |
 | **Operator versions** | ✅ | ❌ | ✅ | | |
@@ -50,7 +50,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 📦 **PODS & WORKLOADS**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **Pod count** | ✅ | ⚠️ | ✅ | | Platform Nav shows per capability |
 | **Pod status** | ✅ | ⚠️ | ✅ | | |
@@ -70,7 +70,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 🎯 **EVENT STREAMS (KAFKA)**
 
-| Data Point | Event Streams UI | OpenShift Console | Mission Console | CLI Only? | Notes |
+| Data Point | Event Streams UI | OpenShift Console | Chief Console | CLI Only? | Notes |
 |------------|------------------|-------------------|-----------------|-----------|-------|
 | **Cluster instances** | ✅ | ⚠️ | ✅ | | |
 | **Cluster status** | ✅ | ⚠️ | ✅ | | |
@@ -99,7 +99,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 🌐 **NETWORKING & ROUTES**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **Routes** | ✅ | ✅ | ✅ | | Platform Nav shows capability UIs |
 | **Route URLs** | ✅ | ✅ | ✅ | | |
@@ -116,7 +116,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 💾 **STORAGE**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **PVC count** | ✅ | ❌ | ❌ | | |
 | **PVC size** | ✅ | ❌ | ❌ | | |
@@ -133,7 +133,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 🔐 **SECURITY & COMPLIANCE**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **Service accounts** | ✅ | ❌ | ❌ | | |
 | **Roles/RoleBindings** | ✅ | ❌ | ❌ | | |
@@ -151,7 +151,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ## 📊 **CHANGE TRACKING**
 
-| Data Point | OpenShift Console | Platform Navigator | Mission Console | CLI Only? | Notes |
+| Data Point | OpenShift Console | Platform Navigator | Chief Console | CLI Only? | Notes |
 |------------|-------------------|-------------------|-----------------|-----------|-------|
 | **What changed recently** | ❌ | ❌ | ✅ | | **OUR UNIQUE VALUE!** |
 | **Operator additions** | ❌ | ❌ | ✅ | | Change detection |
@@ -169,7 +169,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ### **API Connect** (if installed)
 
-| Data Point | API Connect UI | OpenShift Console | Mission Console | CLI Only? |
+| Data Point | API Connect UI | OpenShift Console | Chief Console | CLI Only? |
 |------------|---------------|-------------------|-----------------|-----------|
 | API count | ✅ | ❌ | ❌ | |
 | Product count | ✅ | ❌ | ❌ | |
@@ -179,7 +179,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ### **App Connect** (if installed)
 
-| Data Point | App Connect UI | OpenShift Console | Mission Console | CLI Only? |
+| Data Point | App Connect UI | OpenShift Console | Chief Console | CLI Only? |
 |------------|---------------|-------------------|-----------------|-----------|
 | Integration servers | ✅ | ⚠️ | ❌ | |
 | Flows | ✅ | ❌ | ❌ | |
@@ -187,7 +187,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ### **MQ** (if installed)
 
-| Data Point | MQ Console | OpenShift Console | Mission Console | CLI Only? |
+| Data Point | MQ Console | OpenShift Console | Chief Console | CLI Only? |
 |------------|-----------|-------------------|-----------------|-----------|
 | Queue managers | ✅ | ⚠️ | ❌ | |
 | Queues | ✅ | ❌ | ❌ | |
@@ -198,7 +198,7 @@ A comprehensive comparison of what data is available where, and opportunities fo
 
 ---
 
-## 🏆 **MISSION CONSOLE UNIQUE VALUE PROPOSITIONS**
+## 🏆 **CHIEF CONSOLE UNIQUE VALUE PROPOSITIONS**
 
 Based on the matrix above, here are the **highest-value additions**:
 

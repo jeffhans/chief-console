@@ -1,6 +1,6 @@
-# Mission Console - Distribution Checklist
+# Chief Console - Distribution Checklist
 
-Use this checklist when packaging the Mission Console for a colleague or new TechZone instance.
+Use this checklist when packaging the Chief Console for a colleague or new TechZone instance.
 
 ---
 
@@ -93,7 +93,7 @@ echo "Share this file + GETTING_STARTED.md"
 # Initialize git repo
 git init
 git add .
-git commit -m "Initial commit: CP4I Mission Console"
+git commit -m "Initial commit: CP4I Chief Console"
 
 # Push to your internal Git server
 git remote add origin <your-git-server-url>
@@ -133,7 +133,7 @@ Include these instructions in your email/message:
 ```
 Hey [Colleague],
 
-I'm sharing the CP4I Mission Console - a dashboard for visualizing
+I'm sharing the CP4I Chief Console - a dashboard for visualizing
 your OpenShift/CP4I environment.
 
 Getting Started:
@@ -200,7 +200,7 @@ Before distributing, test on a fresh TechZone instance:
    sudo mv oc kubectl /usr/local/bin/
    ```
 
-4. Copy mission console:
+4. Copy chief console:
    ```bash
    # Via scp, wget, or copy-paste
    scp -r chief-console user@techzone-instance:~/
@@ -256,7 +256,7 @@ open dashboard.html
 
 ### Subject Line
 ```
-CP4I Mission Console - Dashboard for Your TechZone Instance
+CP4I Chief Console - Dashboard for Your TechZone Instance
 ```
 
 ### Email Template
@@ -264,7 +264,7 @@ CP4I Mission Console - Dashboard for Your TechZone Instance
 ```
 Hi [Name],
 
-I'm sharing the CP4I Mission Console - a tool I've been using to
+I'm sharing the CP4I Chief Console - a tool I've been using to
 visualize and monitor our Cloud Pak for Integration environments.
 
 What It Does:
@@ -387,7 +387,7 @@ Before sending to colleague:
 ## 🎉 You're Ready to Share!
 
 Your colleague should be able to:
-1. Download/clone the mission console
+1. Download/clone the chief console
 2. Run `./setup.sh` to verify prerequisites
 3. Run `python3 chief_console.py`
 4. Get a working dashboard in ~5 minutes

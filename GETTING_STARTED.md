@@ -1,12 +1,12 @@
-# CP4I Mission Console - Getting Started Guide
+# CP4I Chief Console - Getting Started Guide
 
-Welcome! This guide will help you set up and run the CP4I Mission Console on your TechZone OpenShift cluster.
+Welcome! This guide will help you set up and run the CP4I Chief Console on your TechZone OpenShift cluster.
 
 ---
 
 ## 📋 What Is This?
 
-The **CP4I Mission Console** is a lightweight dashboard that gives you insights into your Cloud Pak for Integration (CP4I) deployment:
+The **CP4I Chief Console** is a lightweight dashboard that gives you insights into your Cloud Pak for Integration (CP4I) deployment:
 
 - 📊 **Executive Summary** - Cluster health at a glance
 - 🔧 **CP4I Capabilities** - What's installed and running
@@ -99,7 +99,7 @@ oc whoami
 oc get nodes  # Should list your cluster nodes
 ```
 
-### Step 4: Run the Mission Console
+### Step 4: Run the Chief Console
 
 ```bash
 python3 chief_console.py
@@ -108,7 +108,7 @@ python3 chief_console.py
 **Expected output:**
 ```
 ======================================================================
-CP4I MISSION CONSOLE
+CP4I CHIEF CONSOLE
 ======================================================================
 
 📍 Cluster: your-cluster-name
@@ -133,7 +133,7 @@ Step 5: Exporting to Excel...
 ✓ Excel file created: output/your-cluster.com/chief-console-20260104-182322.xlsx
 
 ======================================================================
-MISSION CONSOLE READY
+CHIEF CONSOLE READY
 ======================================================================
 
 Dashboard: output/your-cluster.com/dashboard.html
@@ -281,7 +281,7 @@ python3 monitor.py --interval 30 --max-runs 20
 **Monitor Output:**
 ```
 ======================================================================
-CP4I MISSION CONSOLE - AUTOMATED MONITORING
+CP4I CHIEF CONSOLE - AUTOMATED MONITORING
 ======================================================================
 📍 Cluster: your-cluster-name
    Server: https://api.your-cluster.com:6443
@@ -409,7 +409,7 @@ python3 chief_console.py
 
 ### What Permissions Does This Need?
 
-The mission console is **read-only**. It never modifies your cluster.
+The chief console is **read-only**. It never modifies your cluster.
 
 **Minimum required:**
 ```bash
@@ -477,7 +477,7 @@ oc adm policy add-role-to-user view <your-user> -n tools
 
 ### Excel Export for Customer Collaboration 📊
 
-The mission console automatically generates an Excel spreadsheet with **5 sheets** perfect for licensing discussions:
+The chief console automatically generates an Excel spreadsheet with **5 sheets** perfect for licensing discussions:
 
 **What's Included:**
 1. **Executive Summary** - Cluster overview, VPC total, workload counts

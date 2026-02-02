@@ -1,9 +1,9 @@
-# CP4I Mission Console - Support & Troubleshooting Analysis
+# CP4I Chief Console - Support & Troubleshooting Analysis
 
-Comprehensive analysis of IBM Support data collection requirements vs Mission Console capabilities, based on:
+Comprehensive analysis of IBM Support data collection requirements vs Chief Console capabilities, based on:
 - **11 real ACE PMRs** from CustomerName (Dec 2024)
 - **IBM MustGather documentation** for CP4I components
-- **Current Mission Console features**
+- **Current Chief Console features**
 
 ---
 
@@ -13,7 +13,7 @@ Comprehensive analysis of IBM Support data collection requirements vs Mission Co
 
 IBM Support typically requests:
 
-| Data Item | Description | How Collected | Mission Console Status |
+| Data Item | Description | How Collected | Chief Console Status |
 |-----------|-------------|---------------|----------------------|
 | **Local Error Logs** | Unix syslog or Windows Event Log | Manual export | ❌ Not collected |
 | **ACE Data Collector** | Configuration/topology snapshot | Run script manually | ❌ Not collected |
@@ -27,7 +27,7 @@ IBM Support typically requests:
 
 IBM Support typically requests:
 
-| Data Item | Description | How Collected | Mission Console Status |
+| Data Item | Description | How Collected | Chief Console Status |
 |-----------|-------------|---------------|----------------------|
 | **Pod Logs** | All Event Streams pod logs | `ibm-events-must-gather` script | ⚠️ Partial (can add) |
 | **Kafka Topic Config** | Topic settings, retention, etc | `oc get kafkatopic` | ✅ **Collected** |
@@ -38,7 +38,7 @@ IBM Support typically requests:
 
 ### **CP4I Platform MustGather**
 
-| Data Item | Description | How Collected | Mission Console Status |
+| Data Item | Description | How Collected | Chief Console Status |
 |-----------|-------------|---------------|----------------------|
 | **Platform Navigator Logs** | PN operator and pods | Manual collection | ❌ Not collected |
 | **OpenShift Cluster Logs** | Standard OCP diagnostics | `oc adm must-gather` | ❌ Not collected |
@@ -53,7 +53,7 @@ IBM Support typically requests:
 
 From analyzing the 11 ACE PMRs, IBM Support most frequently requested:
 
-| Requested Data | Frequency | Example PMR | Mission Console Can Provide? |
+| Requested Data | Frequency | Example PMR | Chief Console Can Provide? |
 |----------------|-----------|-------------|----------------------------|
 | **Java version details** | 6 of 11 | TS020307479, TS020661140 | 🟡 **EASY WIN** - Container image inventory |
 | **java.security file** | 3 of 11 | TS020307479 | 🟡 **EASY WIN** - Extract from ConfigMap |
@@ -68,7 +68,7 @@ From analyzing the 11 ACE PMRs, IBM Support most frequently requested:
 
 ---
 
-## 💡 **Mission Console Current State**
+## 💡 **Chief Console Current State**
 
 ### **What We Already Collect (Auto-Included in Snapshot)**
 
@@ -282,9 +282,9 @@ Extract key ConfigMaps (with secret values redacted):
 
 ### **Overall Coverage Estimate**
 
-**Before Mission Console Support Bundle:** 0% (customer manually collects everything)
+**Before Chief Console Support Bundle:** 0% (customer manually collects everything)
 
-**With Mission Console Support Bundle:** ~70% of data requested in first message
+**With Chief Console Support Bundle:** ~70% of data requested in first message
 
 **Impact:**
 - Eliminates 2-3 rounds of "send us X" requests
@@ -357,7 +357,7 @@ Based on PMR frequency and MustGather requirements:
 
 ### **Scenario 1: SSL/TLS Handshake Failure (TS020307479)**
 
-**Without Mission Console:**
+**Without Chief Console:**
 ```
 Day 1: Customer: "SSL errors"
 Day 1: Support: "Send us java.security file"
@@ -371,7 +371,7 @@ Day 5: Customer: "How do I enable those?"
 ...
 ```
 
-**With Mission Console:**
+**With Chief Console:**
 ```
 Day 1: Customer: "SSL errors"
 Day 1: Customer: *attaches support-bundle.tar.gz*
@@ -389,7 +389,7 @@ Day 1: Support: "The java.security change at 2:10pm likely caused this..."
 
 ### **Scenario 2: Global Cache Outage (TS020746116)**
 
-**Without Mission Console:**
+**Without Chief Console:**
 ```
 Day 1: Customer: "500k claims backed up, WXS failing"
 Day 1: Support: "When did this start?"
@@ -404,7 +404,7 @@ Day 5: Support: "That's too low, raise to 32768"
 ...
 ```
 
-**With Mission Console:**
+**With Chief Console:**
 ```
 Day 1: Customer: "500k claims backed up"
 Day 1: Customer: *attaches support-bundle.tar.gz*

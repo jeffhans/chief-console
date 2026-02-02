@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-CP4I Mission Console - Automated Monitoring
+CP4I Chief Console - Automated Monitoring
 
-Runs the mission console periodically and optionally opens the dashboard.
+Runs the chief console periodically and optionally opens the dashboard.
 Highlights changes in the terminal for easy tracking.
 """
 
@@ -20,8 +20,8 @@ sys.path.insert(0, str(Path(__file__).parent / 'src'))
 from cluster_utils import get_cluster_info, format_cluster_name
 
 
-class MissionConsoleMonitor:
-    """Automated monitoring for Mission Console"""
+class ChiefConsoleMonitor:
+    """Automated monitoring for Chief Console"""
 
     def __init__(self, interval: int = 120, auto_open: bool = False, max_runs: int = 0, min_gap: int = 10):
         """
@@ -68,7 +68,7 @@ class MissionConsoleMonitor:
     def run(self):
         """Run the monitoring loop"""
         print("=" * 70)
-        print("CP4I MISSION CONSOLE - AUTOMATED MONITORING")
+        print("CP4I CHIEF CONSOLE - AUTOMATED MONITORING")
         print("=" * 70)
 
         # Display cluster info
@@ -109,7 +109,7 @@ class MissionConsoleMonitor:
                 # Track run duration
                 run_start = time.time()
 
-                # Run mission console
+                # Run chief console
                 self._run_console()
 
                 # Open dashboard if requested
@@ -136,9 +136,9 @@ class MissionConsoleMonitor:
             print()
 
     def _run_console(self):
-        """Run the mission console and capture output"""
+        """Run the chief console and capture output"""
         try:
-            # Run mission console
+            # Run chief console
             result = subprocess.run(
                 [sys.executable, "chief_console.py"],
                 capture_output=True,
@@ -262,7 +262,7 @@ class MissionConsoleMonitor:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="CP4I Mission Console - Automated Monitoring",
+        description="CP4I Chief Console - Automated Monitoring",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -318,7 +318,7 @@ Examples:
         print("   Recommended minimum: 30 seconds")
         print()
 
-    monitor = MissionConsoleMonitor(
+    monitor = ChiefConsoleMonitor(
         interval=args.interval,
         auto_open=args.auto_open,
         max_runs=args.max_runs,

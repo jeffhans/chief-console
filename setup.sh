@@ -1,11 +1,11 @@
 #!/bin/bash
-# CP4I Mission Console - Setup Script
+# CP4I Chief Console - Setup Script
 # This script verifies prerequisites and sets up the environment
 
 set -e  # Exit on error
 
 echo "======================================================================="
-echo "CP4I Mission Console - Setup Verification"
+echo "CP4I Chief Console - Setup Verification"
 echo "======================================================================="
 echo ""
 
@@ -137,7 +137,7 @@ echo ""
 echo "======================================================================="
 
 if [ $ERRORS -eq 0 ]; then
-    echo -e "${GREEN}✓ All checks passed! You're ready to run the mission console.${NC}"
+    echo -e "${GREEN}✓ All checks passed! You're ready to run the chief console.${NC}"
     echo ""
     echo "Next step:"
     echo "  python3 chief_console.py"
