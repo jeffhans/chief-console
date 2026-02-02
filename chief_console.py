@@ -62,6 +62,8 @@ def main():
                     if "cluster_aliases" in local_config:
                         if "cluster_aliases" not in config:
                             config["cluster_aliases"] = {}
+                        if config["cluster_aliases"] is None:
+                            config["cluster_aliases"] = {}
                         config["cluster_aliases"].update(local_config["cluster_aliases"])
                     # Merge other top-level keys
                     for key, value in local_config.items():

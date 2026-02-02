@@ -1,4 +1,4 @@
-# CP4I Mission Console Configuration
+# CP4I Chief Console Configuration
 
 # OpenShift / CP4I Settings
 cluster:
@@ -56,7 +56,7 @@ activity_thresholds:
 
 # Dashboard Settings
 dashboard:
-  title: "CP4I Mission Console"
+  title: "CP4I Chief Console"
 
   # Enable AI-generated narrative sections
   enable_ai_narrative: false
