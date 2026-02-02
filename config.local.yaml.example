@@ -1,0 +1,22 @@
+# Local Configuration Overrides (Example)
+# 
+# Copy this file to config.local.yaml and customize with your settings.
+# config.local.yaml is gitignored and will not be committed.
+#
+# This file allows you to override settings from config.yaml without
+# modifying the base configuration file.
+
+# Example: Add your personal cluster mappings
+cluster_aliases:
+  "your-cluster-api-url.example.com":
+    name: "My Demo Environment"
+    id: "demo-123"
+  "another-cluster.example.com":
+    name: "Production Cluster"
+    id: "prod-456"
+
+# You can override any config.yaml setting here
+# For example:
+# dashboard:
+#   title: "My Custom Dashboard Title"
+#   auto_refresh_seconds: 60

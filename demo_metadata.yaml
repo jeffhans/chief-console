@@ -1,0 +1,212 @@
+# Demo Artifacts Metadata Configuration
+#
+# This file provides business context for your demo artifacts.
+# Use Display Names and descriptions to make technical resources
+# more meaningful and easier to understand.
+
+# Kafka Topics - Business Context
+topics:
+  provider.fhir.raw:
+    display_name: "FHIR Provider Data (Ingest)"
+    description: "Raw electronic health records from provider systems"
+    business_purpose: "Healthcare data ingest layer"
+    owner: "Healthcare Integration Team"
+    data_classification: "PHI - Protected Health Information"
+
+  provider.fhir.enriched:
+    display_name: "FHIR Provider Data (Enriched)"
+    description: "Validated and enriched provider data ready for analytics"
+    business_purpose: "Healthcare data processing layer"
+    owner: "Healthcare Integration Team"
+
+  claims.transactions.raw:
+    display_name: "Insurance Claims (Raw)"
+    description: "Raw insurance claims from billing systems"
+    business_purpose: "Claims processing ingest"
+    owner: "Claims Processing Team"
+
+  claims.transactions.encrypted:
+    display_name: "Insurance Claims (Encrypted)"
+    description: "Encrypted claims for secure transmission"
+    business_purpose: "Claims security layer"
+    owner: "Security Team"
+
+  claims.transactions.decrypted:
+    display_name: "Insurance Claims (Decrypted)"
+    description: "Decrypted claims for processing"
+    business_purpose: "Claims processing layer"
+    owner: "Claims Processing Team"
+
+# Applications / Pods - Business Context
+applications:
+  # CP4I Platform Navigator
+  cp4i-navigator.*:
+    display_name: "CP4I Platform Navigator"
+    description: "Unified management console for all CP4I capabilities"
+    business_purpose: "Central administration and monitoring"
+    owner: "Platform Team"
+
+  # Event Streams - Kafka Controllers
+  es-platform-controller-.*:
+    display_name: "Event Streams Controller"
+    description: "Kafka cluster management and coordination"
+    business_purpose: "Maintains Kafka cluster health and state"
+    owner: "Platform Team"
+
+  # Event Streams - Schema Registry
+  es-platform-ibm-es-ac-reg.*:
+    display_name: "Event Streams Schema Registry"
+    description: "Manages Avro schemas for Kafka topics"
+    business_purpose: "Schema validation and evolution"
+    owner: "Integration Team"
+
+  # Event Streams - Admin API
+  es-platform-ibm-es-admapi.*:
+    display_name: "Event Streams Admin API"
+    description: "Administrative operations for Event Streams"
+    business_purpose: "Topic and user management"
+    owner: "Platform Team"
+
+  # Event Streams - Metrics
+  es-platform-ibm-es-metrics.*:
+    display_name: "Event Streams Metrics Collector"
+    description: "Collects and exposes Kafka metrics"
+    business_purpose: "Monitoring and observability"
+    owner: "Platform Team"
+
+  # Event Streams - REST Producer API
+  es-platform-ibm-es-recapi.*:
+    display_name: "Event Streams REST Producer"
+    description: "HTTP API for producing messages to Kafka"
+    business_purpose: "REST-based message publishing"
+    owner: "Integration Team"
+
+  # Event Streams - UI
+  es-platform-ibm-es-ui.*:
+    display_name: "Event Streams Management Console"
+    description: "Web UI for managing topics, monitoring, and configuration"
+    business_purpose: "User-friendly Event Streams administration"
+    owner: "Platform Team"
+
+  # Demo Applications (tools namespace) - Updated to new naming conventions
+  healthcare-ep-demo-ibm-ep-sts-.*:  # Event Processing StatefulSet pods
+    display_name: "Healthcare Claims Flow Processor"
+    description: "Real-time event processing for healthcare claims and FHIR data validation"
+    business_purpose: "Demonstrate IBM Event Processing with healthcare claims workflows"
+    owner: "Demo Team"
+
+  healthcare-flink-demo-.*:  # Flink Analytics Deployment pods
+    display_name: "Healthcare Real-Time Analytics"
+    description: "Real-time streaming analytics using Apache Flink for healthcare insights"
+    business_purpose: "Demonstrate advanced analytics on healthcare event streams"
+    owner: "Demo Team"
+
+  # Legacy names (for backward compatibility during migration)
+  ep-demo-ibm-ep-sts-.*:
+    display_name: "Event Processing Demo (Legacy)"
+    description: "Real-time event processing for healthcare claims and FHIR data"
+    business_purpose: "Demonstrate IBM Event Processing capabilities with healthcare use cases"
+    owner: "Demo Team"
+
+  ea-flink-demo-.*:
+    display_name: "Event Analytics Demo (Legacy)"
+    description: "Real-time streaming analytics using Apache Flink"
+    business_purpose: "Demonstrate advanced analytics on event streams"
+    owner: "Demo Team"
+
+  curl-login-test:
+    display_name: "Authentication Test Utility"
+    description: "Testing pod for validating cluster authentication and connectivity"
+    business_purpose: "Troubleshooting and validation"
+    owner: "Platform Team"
+
+# Event Streams Instances - Business Context
+event_streams:
+  es-platform:
+    display_name: "Healthcare Integration Platform"
+    description: "Central event streaming backbone for healthcare data"
+    business_purpose: "Event-driven integration hub"
+    owner: "Platform Team"
+
+# Routes - Business Context
+routes:
+  # CP4I Platform Navigator
+  cp4i-navigator-pn:
+    display_name: "CP4I Platform Navigator"
+    description: "Unified console for all Cloud Pak for Integration capabilities"
+    business_purpose: "Single pane of glass for platform management"
+
+  # Event Streams Routes
+  es-platform-ibm-es-ui:
+    display_name: "Event Streams Console"
+    description: "Web console for Event Streams management and monitoring"
+    business_purpose: "Visual administration of Kafka clusters and topics"
+
+  es-platform-ibm-es-ac-reg-external:
+    display_name: "Schema Registry API"
+    description: "External access to Avro Schema Registry"
+    business_purpose: "Schema registration and retrieval for producers/consumers"
+
+  es-platform-ibm-es-admapi-external:
+    display_name: "Event Streams Admin API"
+    description: "External administrative API for Event Streams"
+    business_purpose: "Programmatic management of topics, users, and configuration"
+
+  es-platform-ibm-es-recapi-external:
+    display_name: "Event Streams REST Producer"
+    description: "HTTP endpoint for publishing messages to Kafka topics"
+    business_purpose: "REST-based message production for non-Kafka clients"
+
+  # Demo Routes (tools namespace) - Updated to new naming conventions
+  healthcare-ep-demo-ibm-ep-rt:
+    display_name: "Healthcare Claims Flow Demo UI"
+    description: "Interactive web console for healthcare claims event processing demonstrations"
+    business_purpose: "Visualize and interact with real-time claims processing flows"
+
+  # Legacy route name (for backward compatibility)
+  ep-demo-ibm-ep-rt:
+    display_name: "Event Processing Demo UI (Legacy)"
+    description: "Interactive web console for IBM Event Processing demonstrations"
+    business_purpose: "Visualize and interact with real-time event processing flows"
+
+# Namespaces - Business Context
+namespaces:
+  integration-platform:
+    display_name: "Healthcare Integration Platform"
+    description: "Main integration namespace for healthcare solutions"
+    business_purpose: "Production integration workloads"
+    owner: "Integration Team"
+
+  tools:
+    display_name: "Demo & Tools Workspace"
+    description: "Demonstration applications showcasing CP4I Event Processing and Analytics"
+    business_purpose: "Interactive demos and proof-of-concepts"
+    owner: "Demo Team"
+
+# Data Flow Patterns - For visualization
+data_flows:
+  healthcare_integration:
+    name: "Healthcare Data Integration Flow"
+    description: "End-to-end healthcare data processing pipeline"
+    steps:
+      - source: "Provider Systems"
+        topic: "provider.fhir.raw"
+        description: "Ingest FHIR data"
+      - topic: "provider.fhir.enriched"
+        description: "Enrich and validate"
+      - destination: "Analytics Platform"
+        description: "Consume enriched data"
+
+  claims_processing:
+    name: "Insurance Claims Processing Flow"
+    description: "Secure claims processing pipeline"
+    steps:
+      - source: "Billing Systems"
+        topic: "claims.transactions.raw"
+        description: "Ingest claims"
+      - topic: "claims.transactions.encrypted"
+        description: "Encrypt for security"
+      - topic: "claims.transactions.decrypted"
+        description: "Decrypt for processing"
+      - destination: "Claims Processing System"
+        description: "Process claims"

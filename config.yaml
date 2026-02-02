@@ -71,14 +71,9 @@ output:
   assets_path: "output/assets"
 
 # Optional: map cluster IDs to friendly names for dashboards/snapshots
+# Add your personal cluster mappings in config.local.yaml (gitignored)
 cluster_aliases:
-  # You can use a simple string or a dict with name/id to show in the header
-  "6951b7cb795b799e371a711f.am1.techzone.ibm.com":
-    name: "CP4I Demo Dashboard"
-    id: "6951b7cb795b799e371a711f"
-  "695812b543da3d2f055c8c51.am1.techzone.ibm.com":
-    name: "Healthcare Demo - CP4I"
-    id: "695812b543da3d2f055c8c51"
-  "695d56e85f9f54d9fcc13a4a.am1.techzone.ibm.com":
-    name: "CP4I AI-Setup Testing"
-    id: "695d56e85f9f54d9fcc13a4a"
+  # Example format:
+  # "cluster-api-url.example.com":
+  #   name: "My Demo Environment"
+  #   id: "demo-123"

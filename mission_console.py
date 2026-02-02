@@ -51,6 +51,25 @@ def main():
     if not isinstance(config, dict):
         config = {}
 
+    # Merge local config overrides (gitignored)
+    local_config_path = Path(__file__).parent / "config.local.yaml"
+    if local_config_path.exists():
+        try:
+            with open(local_config_path, "r") as f:
+                local_config = yaml.safe_load(f) or {}
+                if isinstance(local_config, dict):
+                    # Deep merge cluster_aliases
+                    if "cluster_aliases" in local_config:
+                        if "cluster_aliases" not in config:
+                            config["cluster_aliases"] = {}
+                        config["cluster_aliases"].update(local_config["cluster_aliases"])
+                    # Merge other top-level keys
+                    for key, value in local_config.items():
+                        if key != "cluster_aliases":
+                            config[key] = value
+        except Exception as e:
+            print(f"⚠️  Could not read config.local.yaml: {e}")
+
     cluster_id = cluster_info['cluster_id']
     aliases = config.get("cluster_aliases", {}) or {}
     alias_entry = aliases.get(cluster_id)

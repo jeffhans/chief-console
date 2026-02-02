@@ -1,4 +1,10 @@
-# CP4I Mission Console - Dashboard-First Prototype
+# CP4I Mission Console
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![OpenShift](https://img.shields.io/badge/OpenShift-4.x-red.svg)](https://www.openshift.com/)
+
+> A dashboard-first monitoring tool for IBM Cloud Pak for Integration (CP4I) environments
 
 ## Project Objective
 
@@ -208,6 +214,36 @@ cp environments.example.yaml environments.yaml
 
 ---
 
+## Local Configuration Overrides
+
+The Mission Console supports local configuration overrides for personal settings without modifying the base `config.yaml` file.
+
+### Quick Start
+
+1. **Create local config** (gitignored):
+   ```bash
+   cp config.local.yaml.example config.local.yaml
+   ```
+
+2. **Add your cluster mappings**:
+   ```yaml
+   cluster_aliases:
+     "your-cluster-api.example.com":
+       name: "My Demo Environment"
+       id: "demo-123"
+   ```
+
+3. **Override any setting** from `config.yaml`:
+   ```yaml
+   dashboard:
+     title: "My Custom Dashboard"
+     auto_refresh_seconds: 60
+   ```
+
+The local config is automatically merged with the base config at runtime, with local settings taking precedence.
+
+---
+
 ## Project Structure
 
 ```
@@ -219,7 +255,9 @@ mission-console/
 │   ├── snapshots/
 │   ├── assets/
 │   └── env-imports/        # Archived PDF imports
-├── config.yaml             # Application configuration
+├── config.yaml             # Base application configuration
+├── config.local.yaml       # Local overrides (gitignored)
+├── config.local.yaml.example  # Template for local config
 ├── environments.yaml       # Environment credentials (gitignored)
 ├── environments.example.yaml  # Template for environments.yaml
 ├── requirements.txt        # Python dependencies

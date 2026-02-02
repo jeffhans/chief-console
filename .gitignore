@@ -46,6 +46,7 @@ config.local.yaml
 *.credentials
 environments.yaml
 access/
+localFilesOnly/
 
 # Logs
 *.log
