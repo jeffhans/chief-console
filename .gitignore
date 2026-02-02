@@ -47,6 +47,9 @@ config.local.yaml
 environments.yaml
 access/
 localFilesOnly/
+*.pdf
+Summaries*/
+LINKEDIN_POSTS.md
 
 # Logs
 *.log
