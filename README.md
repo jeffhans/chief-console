@@ -1,4 +1,4 @@
-# CP4I Mission Console
+# CP4I Chief Console
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -10,7 +10,7 @@
 
 Build a **reusable, dashboard-centric prototype** that summarizes a CP4I (Cloud Pak for Integration) environment using **Entity Activity Profiles**.
 
-The prototype is driven by a **desktop Python script** that collects data from an OpenShift / CP4I instance (via local `oc` context), generates structured summaries, and renders a **single HTML "Mission Console" dashboard**.
+The prototype is driven by a **desktop Python script** that collects data from an OpenShift / CP4I instance (via local `oc` context), generates structured summaries, and renders a **single HTML "Chief Console" dashboard**.
 
 This is intentionally **dashboard-first** and **out-of-cluster** to survive TechZone churn and accelerate iteration. In-cluster operators and long-lived services are explicitly out of scope for v1.
 
