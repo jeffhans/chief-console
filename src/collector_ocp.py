@@ -429,7 +429,7 @@ class OCPCollector:
         Returns comprehensive snapshot of cluster state
         """
         print("=" * 60)
-        print("CP4I Mission Console - Data Collection")
+        print("CP4I Chief Console - Data Collection")
         print("=" * 60)
 
         snapshot = {

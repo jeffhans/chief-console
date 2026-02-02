@@ -1,5 +1,5 @@
 """
-HTML Dashboard Renderer for CP4I Mission Console
+HTML Dashboard Renderer for CP4I Chief Console
 
 Generates a self-contained HTML dashboard from cluster snapshots.
 Implements "Meaningful Waves" design with graceful degradation.
@@ -12,7 +12,7 @@ from typing import Dict, Any, List, Optional
 
 
 class DashboardRenderer:
-    """Renders Mission Console dashboard from snapshot data"""
+    """Renders Chief Console dashboard from snapshot data"""
 
     def __init__(self, snapshot: Dict[str, Any], diff: Optional[Dict[str, Any]] = None):
         self.snapshot = snapshot
@@ -30,7 +30,7 @@ class DashboardRenderer:
         self.cluster_alias_id = self.cluster.get('alias_id') or self.metadata.get('cluster_alias_id')
         self.cluster_display = (
             self.cluster.get('display_name')
-            or "CP4I Mission Console"
+            or "CP4I Chief Console"
         )
         self.cluster_id = self.cluster.get('id') or self.metadata.get('cluster_id')
 
@@ -119,7 +119,7 @@ class DashboardRenderer:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CP4I Mission Console</title>
+    <title>CP4I Chief Console</title>
     {self._render_styles()}
 </head>
 <body>
@@ -367,7 +367,7 @@ class DashboardRenderer:
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('CP4I Mission Console Dashboard Loaded');
+            console.log('CP4I Chief Console Dashboard Loaded');
         });
     </script>"""
 
@@ -385,7 +385,7 @@ class DashboardRenderer:
         subtitle_html = "<br>".join([line for line in subtitle_lines if line])
 
         return f"""<div class="header">
-        <h1>CP4I Mission Console</h1>
+        <h1>CP4I Chief Console</h1>
         <div class="subtitle">
             {subtitle_html}
         </div>
@@ -1677,7 +1677,7 @@ class DashboardRenderer:
         collection_time = self.metadata.get('collection_timestamp', '')
         return f"""<div class="footer">
         <div class="refresh-time">Snapshot: {self._format_timestamp(collection_time)}</div>
-        <p style="margin-top: 10px;">CP4I Mission Console v1.0 | Powered by Mission Console Prototype</p>
+        <p style="margin-top: 10px;">CP4I Chief Console v1.0 | Powered by Chief Console Prototype</p>
     </div>"""
 
     def _determine_overall_status(self) -> Dict[str, str]:

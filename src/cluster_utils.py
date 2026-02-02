@@ -1,5 +1,5 @@
 """
-Cluster Utilities for CP4I Mission Console
+Cluster Utilities for CP4I Chief Console
 Handles cluster detection and identification
 """
 

@@ -1,5 +1,5 @@
 """
-Snapshot Diff Engine for CP4I Mission Console
+Snapshot Diff Engine for CP4I Chief Console
 
 Compares snapshots over time to detect changes and generate insights.
 Categorizes changes by importance and type.

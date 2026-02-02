@@ -1,5 +1,5 @@
 """
-Excel Exporter for CP4I Mission Console
+Excel Exporter for CP4I Chief Console
 Generates customer-friendly Excel spreadsheets for licensing and sizing collaboration
 """
 
@@ -15,7 +15,7 @@ except ImportError:
 
 
 class ExcelExporter:
-    """Export Mission Console data to Excel format for customer collaboration"""
+    """Export Chief Console data to Excel format for customer collaboration"""
 
     def __init__(self, snapshot: Dict[str, Any], resource_summary: Optional[Dict[str, Any]] = None):
         """
@@ -96,7 +96,7 @@ class ExcelExporter:
         ws = self.wb.create_sheet("Executive Summary", 0)
 
         # Title
-        ws['A1'] = "CP4I Mission Console - Executive Summary"
+        ws['A1'] = "CP4I Chief Console - Executive Summary"
         ws['A1'].font = Font(size=14, bold=True, color="1F4E78")
         ws.merge_cells('A1:D1')
 

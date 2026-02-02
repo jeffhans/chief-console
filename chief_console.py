@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-CP4I Mission Console - Main Entry Point
+CP4I Chief Console - Main Entry Point
 
 Collects cluster data and generates dashboard in one command.
 """
@@ -25,7 +25,7 @@ import json
 def main():
     """Run collection and render dashboard"""
     print("=" * 70)
-    print("CP4I MISSION CONSOLE")
+    print("CP4I CHIEF CONSOLE")
     print("=" * 70)
     print()
 
@@ -82,7 +82,7 @@ def main():
     elif isinstance(alias_entry, str):
         cluster_alias_name = alias_entry
 
-    cluster_display = cluster_alias_name or "CP4I Mission Console"
+    cluster_display = cluster_alias_name or "CP4I Chief Console"
 
     print(f"📍 Cluster: {cluster_display}")
     print(f"   Server: {cluster_info['server']}")
@@ -207,7 +207,7 @@ def main():
 
     print()
     print("=" * 70)
-    print("MISSION CONSOLE READY")
+    print("CHIEF CONSOLE READY")
     print("=" * 70)
     print()
     print(f"Dashboard: {dashboard_file}")

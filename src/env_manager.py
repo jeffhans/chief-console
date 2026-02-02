@@ -1,5 +1,5 @@
 """
-Environment Manager for CP4I Mission Console
+Environment Manager for CP4I Chief Console
 
 Manages multiple CP4I environment profiles including:
 - Credential storage and retrieval
