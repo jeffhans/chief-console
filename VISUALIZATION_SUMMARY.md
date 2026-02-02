@@ -77,7 +77,7 @@ Every resource change has a clickable `[🔗 View]` link that opens:
 
 ### Generate Dashboard (Automatic)
 ```bash
-./mission_console.py
+./chief_console.py
 ```
 The enhanced view is automatically included!
 
@@ -180,7 +180,7 @@ Click `[🔗 View]` → Opens pod in OpenShift Console with:
 
 1. **Run a snapshot** to see current state:
    ```bash
-   ./mission_console.py
+   ./chief_console.py
    ```
 
 2. **Make some changes** to your cluster:
@@ -190,7 +190,7 @@ Click `[🔗 View]` → Opens pod in OpenShift Console with:
 
 3. **Run another snapshot** to see the changes:
    ```bash
-   ./mission_console.py
+   ./chief_console.py
    ```
 
 4. **Open the dashboard** and explore:

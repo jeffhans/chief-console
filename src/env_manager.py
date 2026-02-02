@@ -100,7 +100,7 @@ class EnvironmentManager:
             'type': 'pdf',
             'file': str(pdf_path),
             'imported_date': datetime.now().isoformat(),
-            'imported_by': 'mission-console-import'
+            'imported_by': 'chief-console-import'
         }
 
         if 'created_date' not in env_data:

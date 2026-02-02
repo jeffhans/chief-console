@@ -1,5 +1,5 @@
 #!/bin/bash
-# CP4I Mission Console - Create Distribution Package
+# CP4I Chief Console - Create Distribution Package
 # This script creates a clean distribution package ready to share with colleagues
 
 set -e  # Exit on error
@@ -12,22 +12,22 @@ NC='\033[0m' # No Color
 
 VERSION="1.0.0"
 DATE=$(date +%Y%m%d)
-PACKAGE_NAME="mission-console-v${VERSION}-${DATE}"
+PACKAGE_NAME="chief-console-v${VERSION}-${DATE}"
 TEMP_DIR="/tmp/${PACKAGE_NAME}"
 CURRENT_DIR=$(pwd)
 
 echo -e "${BLUE}=======================================================================${NC}"
-echo -e "${BLUE}CP4I Mission Console - Distribution Package Creator${NC}"
+echo -e "${BLUE}CP4I Chief Console - Distribution Package Creator${NC}"
 echo -e "${BLUE}=======================================================================${NC}"
 echo ""
 echo "Package: ${PACKAGE_NAME}"
 echo "Date: $(date)"
 echo ""
 
-# Check if we're in the mission-console directory
-if [ ! -f "mission_console.py" ]; then
-    echo -e "${YELLOW}⚠ Error: Must run from mission-console directory${NC}"
-    echo "cd to the mission-console directory and run again"
+# Check if we're in the chief-console directory
+if [ ! -f "chief_console.py" ]; then
+    echo -e "${YELLOW}⚠ Error: Must run from chief-console directory${NC}"
+    echo "cd to the chief-console directory and run again"
     exit 1
 fi
 
@@ -42,7 +42,7 @@ echo -e "${BLUE}📋 Copying files...${NC}"
 echo "  ✓ Python code"
 mkdir -p "${TEMP_DIR}/src"
 cp src/*.py "${TEMP_DIR}/src/"
-cp mission_console.py "${TEMP_DIR}/"
+cp chief_console.py "${TEMP_DIR}/"
 
 # Configuration files
 echo "  ✓ Configuration files"
@@ -81,7 +81,7 @@ cat > "${TEMP_DIR}/START_HERE.txt" << 'EOF'
 QUICK START:
 1. Open GETTING_STARTED.md (comprehensive setup guide)
 2. Run: ./setup.sh (verify prerequisites)
-3. Run: python3 mission_console.py
+3. Run: python3 chief_console.py
 4. Dashboard auto-opens in browser!
 
 PREREQUISITES:
@@ -183,7 +183,7 @@ Files Created:
 
 What's Included:
   ✓ Python source code (src/)
-  ✓ Main entry point (mission_console.py)
+  ✓ Main entry point (chief_console.py)
   ✓ Configuration files (*.yaml)
   ✓ Setup script (setup.sh)
   ✓ Documentation (*.md)
@@ -222,11 +222,11 @@ Security Reminder:
 
 Next Steps for Recipient:
   1. Extract archive
-  2. cd mission-console
+  2. cd chief-console
   3. Read START_HERE.txt
   4. Follow GETTING_STARTED.md
   5. Run ./setup.sh
-  6. Run python3 mission_console.py
+  6. Run python3 chief_console.py
 
 EOF
 

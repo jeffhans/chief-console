@@ -51,17 +51,17 @@ python3 monitor.py --interval 30 --max-runs 20 --auto-open
 
 **Simple watch mode:**
 ```bash
-watch -n 120 'python3 mission_console.py'
+watch -n 120 'python3 chief_console.py'
 ```
 
 **With dashboard auto-open (macOS):**
 ```bash
-watch -n 120 'python3 mission_console.py && open output/dashboard.html'
+watch -n 120 'python3 chief_console.py && open output/dashboard.html'
 ```
 
 **With dashboard auto-open (Linux):**
 ```bash
-watch -n 120 'python3 mission_console.py && xdg-open output/dashboard.html'
+watch -n 120 'python3 chief_console.py && xdg-open output/dashboard.html'
 ```
 
 ---
@@ -75,7 +75,7 @@ crontab -e
 
 **Add entry to run every 5 minutes:**
 ```cron
-*/5 * * * * cd /Users/jeffhans/Documents/ai_tools/mission-console && /usr/bin/python3 mission_console.py >> logs/monitor.log 2>&1
+*/5 * * * * cd /Users/jeffhans/Documents/ai_tools/chief-console && /usr/bin/python3 chief_console.py >> logs/monitor.log 2>&1
 ```
 
 **Create logs directory first:**
@@ -284,7 +284,7 @@ tail -f logs/monitor-*.log
 
 **Monitor not starting:**
 - Check Python version: `python3 --version`
-- Ensure mission_console.py works: `python3 mission_console.py`
+- Ensure chief_console.py works: `python3 chief_console.py`
 
 **Dashboard not opening:**
 - Check if file exists: `ls -la output/dashboard.html`
@@ -307,7 +307,7 @@ tail -f logs/monitor-*.log
 Create wrapper script:
 ```bash
 #!/bin/bash
-OUTPUT=$(python3 mission_console.py 2>&1)
+OUTPUT=$(python3 chief_console.py 2>&1)
 
 if echo "$OUTPUT" | grep -q "🔴 CRITICAL"; then
     echo "$OUTPUT" | mail -s "CP4I Critical Alert" you@example.com
@@ -319,7 +319,7 @@ fi
 Use webhook in wrapper script:
 ```bash
 #!/bin/bash
-OUTPUT=$(python3 mission_console.py 2>&1)
+OUTPUT=$(python3 chief_console.py 2>&1)
 
 if echo "$OUTPUT" | grep -q "🟡 IMPORTANT"; then
     curl -X POST -H 'Content-type: application/json' \
@@ -363,7 +363,7 @@ python3 monitor.py --interval 120 --auto-open
 
 ```bash
 # Add to cron for daily 8am check
-0 8 * * * cd /path/to/mission-console && python3 mission_console.py
+0 8 * * * cd /path/to/chief-console && python3 chief_console.py
 ```
 
 ### Continuous Background Monitoring

@@ -271,7 +271,7 @@ https://console.apps.cluster.com/k8s/cluster/nodes/worker-1
 
 After running `python3 test_enhanced_dashboard.py`, open the dashboard:
 ```bash
-file:///Users/jeffhans/Documents/ai_tools/mission-console/output/dashboard.html
+file:///Users/jeffhans/Documents/ai_tools/chief-console/output/dashboard.html
 ```
 
 Look for the **"🔄 What Changed"** section in **Wave 1: Executive Summary**.
@@ -282,7 +282,7 @@ Look for the **"🔄 What Changed"** section in **Wave 1: Executive Summary**.
 
 1. **Generate a new snapshot to create changes:**
    ```bash
-   ./mission_console.py
+   ./chief_console.py
    ```
 
 2. **View the enhanced dashboard:**

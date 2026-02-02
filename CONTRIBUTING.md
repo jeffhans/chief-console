@@ -20,8 +20,8 @@ This project adheres to a code of conduct that all contributors are expected to 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** locally:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/mission-console.git
-   cd mission-console
+   git clone https://github.com/YOUR_USERNAME/chief-console.git
+   cd chief-console
    ```
 3. **Set up your development environment** (see below)
 
@@ -102,7 +102,7 @@ Enhancement suggestions are welcome! Please create an issue with:
 
 ```bash
 # Run basic functionality test
-python mission_console.py
+python chief_console.py
 
 # Run specific test modules (when available)
 python -m pytest tests/

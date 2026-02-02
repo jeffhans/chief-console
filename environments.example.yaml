@@ -57,7 +57,7 @@ environments:
       type: "pdf"  # pdf, manual, ui-export, etc.
       file: "output/env-imports/techzone-2025-01-15.pdf"
       imported_date: "2025-01-15T10:30:00Z"
-      imported_by: "mission-console-import"
+      imported_by: "chief-console-import"
 
 # Active environment (used by default)
 active: "techzone-demo-2025-01"

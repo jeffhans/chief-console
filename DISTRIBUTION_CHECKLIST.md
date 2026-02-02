@@ -9,8 +9,8 @@ Use this checklist when packaging the Mission Console for a colleague or new Tec
 ### ✅ Required Files (Always Include)
 
 ```
-mission-console/
-├── mission_console.py              ← Main entry point
+chief-console/
+├── chief_console.py              ← Main entry point
 ├── monitor.py                      ← Automated monitoring script
 ├── requirements.txt                ← Python dependencies (pyyaml, openpyxl)
 ├── setup.sh                        ← Setup verification script
@@ -42,7 +42,7 @@ mission-console/
 ├── output/                         ← Contains YOUR cluster data!
 │   ├── your-cluster.com/          ← Cluster-specific directories
 │   │   ├── dashboard.html
-│   │   ├── mission-console-*.xlsx
+│   │   ├── chief-console-*.xlsx
 │   │   └── snapshots/
 │   └── another-cluster.com/
 ├── .git/                           ← Git history (optional to exclude)
@@ -64,12 +64,12 @@ mission-console/
 ### Method 1: Zip File (Recommended for Email/Sharing)
 
 ```bash
-# From mission-console directory
+# From chief-console directory
 cd ..
 
 # Create clean copy
-cp -r mission-console mission-console-distribution
-cd mission-console-distribution
+cp -r chief-console chief-console-distribution
+cd chief-console-distribution
 
 # Remove output and git
 rm -rf output/
@@ -78,12 +78,12 @@ rm -rf src/__pycache__
 
 # Create zip
 cd ..
-zip -r mission-console.zip mission-console-distribution/
+zip -r chief-console.zip chief-console-distribution/
 
 # Clean up
-rm -rf mission-console-distribution/
+rm -rf chief-console-distribution/
 
-echo "✓ Created: mission-console.zip"
+echo "✓ Created: chief-console.zip"
 echo "Share this file + GETTING_STARTED.md"
 ```
 
@@ -105,7 +105,7 @@ git push -u origin main
 
 ### Method 3: Shared Drive (Simplest)
 
-1. Copy entire `mission-console/` folder to shared drive
+1. Copy entire `chief-console/` folder to shared drive
 2. Delete the `output/` folder first
 3. Share the location with colleagues
 4. They copy to their local machine
@@ -137,11 +137,11 @@ I'm sharing the CP4I Mission Console - a dashboard for visualizing
 your OpenShift/CP4I environment.
 
 Getting Started:
-1. Unzip mission-console.zip
-2. cd mission-console
+1. Unzip chief-console.zip
+2. cd chief-console
 3. Read GETTING_STARTED.md (comprehensive guide)
 4. Run: ./setup.sh (verifies prerequisites)
-5. Run: python3 mission_console.py
+5. Run: python3 chief_console.py
 
 Prerequisites:
 - Python 3.8+
@@ -203,12 +203,12 @@ Before distributing, test on a fresh TechZone instance:
 4. Copy mission console:
    ```bash
    # Via scp, wget, or copy-paste
-   scp -r mission-console user@techzone-instance:~/
+   scp -r chief-console user@techzone-instance:~/
    ```
 
 5. Run setup:
    ```bash
-   cd mission-console
+   cd chief-console
    ./setup.sh
    ```
 
@@ -219,7 +219,7 @@ Before distributing, test on a fresh TechZone instance:
 
 7. Run console:
    ```bash
-   python3 mission_console.py
+   python3 chief_console.py
    ```
 
 8. Verify output:
@@ -246,7 +246,7 @@ curl https://bootstrap.pypa.io/get-pip.py | python3
 **Issue: No display for opening HTML**
 ```bash
 # Copy dashboard to local machine
-scp user@techzone-instance:~/mission-console/output/dashboard.html ./
+scp user@techzone-instance:~/chief-console/output/dashboard.html ./
 open dashboard.html
 ```
 
@@ -285,9 +285,9 @@ Key Features:
 🔄 Automated monitoring script included
 
 Getting Started:
-1. Download the attached mission-console.zip
+1. Download the attached chief-console.zip
 2. Unzip and read GETTING_STARTED.md
-3. Run: python3 mission_console.py
+3. Run: python3 chief_console.py
 4. Open: output/dashboard.html
 
 Prerequisites:
@@ -322,7 +322,7 @@ For frequent distribution, create a setup package:
 
 VERSION="1.0.0"
 DATE=$(date +%Y%m%d)
-PACKAGE="mission-console-v${VERSION}-${DATE}"
+PACKAGE="chief-console-v${VERSION}-${DATE}"
 
 echo "Creating distribution package: ${PACKAGE}"
 
@@ -331,7 +331,7 @@ mkdir -p /tmp/${PACKAGE}
 
 # Copy files
 cp -r src /tmp/${PACKAGE}/
-cp mission_console.py /tmp/${PACKAGE}/
+cp chief_console.py /tmp/${PACKAGE}/
 cp requirements.txt /tmp/${PACKAGE}/
 cp setup.sh /tmp/${PACKAGE}/
 cp *.yaml /tmp/${PACKAGE}/
@@ -389,7 +389,7 @@ Before sending to colleague:
 Your colleague should be able to:
 1. Download/clone the mission console
 2. Run `./setup.sh` to verify prerequisites
-3. Run `python3 mission_console.py`
+3. Run `python3 chief_console.py`
 4. Get a working dashboard in ~5 minutes
 
 Good luck! 🚀

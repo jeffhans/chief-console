@@ -194,7 +194,7 @@ def main():
     print("-" * 70)
     excel_file = None
     try:
-        excel_output = cluster_output_dir / f"mission-console-{timestamp}.xlsx"
+        excel_output = cluster_output_dir / f"chief-console-{timestamp}.xlsx"
         exporter = ExcelExporter(snapshot, resource_summary)
         excel_file = exporter.export(str(excel_output))
     except ImportError:

@@ -114,7 +114,7 @@ echo ""
 
 # Check required files
 FILES=(
-    "mission_console.py"
+    "chief_console.py"
     "monitor.py"
     "src/collector_ocp.py"
     "src/html_renderer.py"
@@ -140,7 +140,7 @@ if [ $ERRORS -eq 0 ]; then
     echo -e "${GREEN}✓ All checks passed! You're ready to run the mission console.${NC}"
     echo ""
     echo "Next step:"
-    echo "  python3 mission_console.py"
+    echo "  python3 chief_console.py"
     echo ""
     exit 0
 else

@@ -25,7 +25,7 @@ def main():
     snapshots = find_latest_snapshots(count=2)
 
     if len(snapshots) < 2:
-        print("❌ Need at least 2 snapshots to test. Please run mission_console.py first.")
+        print("❌ Need at least 2 snapshots to test. Please run chief_console.py first.")
         return 1
 
     current = snapshots[0]

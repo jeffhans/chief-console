@@ -118,7 +118,7 @@ Each change type has clear visual indicators:
 The enhanced view is automatically included when you run:
 
 ```bash
-./mission_console.py
+./chief_console.py
 ```
 
 The dashboard will show changes since the last snapshot.

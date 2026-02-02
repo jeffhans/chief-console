@@ -143,7 +143,7 @@ From analyzing the 11 ACE PMRs, IBM Support most frequently requested:
 ### **Goal:** One-command data collection that eliminates 80% of support back-and-forth
 
 ```bash
-python3 mission_console.py --support-bundle
+python3 chief_console.py --support-bundle
 ```
 
 **Creates:** `support-bundle-YYYYMMDD-HHMMSS.tar.gz`
@@ -174,7 +174,7 @@ support-bundle-20251228-220000/
 └── metadata/
     ├── collection-timestamp.txt
     ├── environment-name.txt
-    └── mission-console-version.txt
+    └── chief-console-version.txt
 ```
 
 #### **🔥 Tier 2: Add for Failed Pods (Auto-Detect)**
@@ -439,7 +439,7 @@ Day 1: Support: "Raise NPROC to 32768, restart WXS pods"
 ### **Deliverable:**
 
 ```bash
-python3 mission_console.py --support-bundle
+python3 chief_console.py --support-bundle
 
 # Output:
 # ✅ Collecting cluster data...

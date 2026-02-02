@@ -247,7 +247,7 @@ The local config is automatically merged with the base config at runtime, with l
 ## Project Structure
 
 ```
-mission-console/
+chief-console/
 ├── src/                    # Python source modules
 │   └── env_manager.py      # Environment management
 ├── templates/              # HTML templates

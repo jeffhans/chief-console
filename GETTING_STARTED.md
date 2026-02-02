@@ -70,8 +70,8 @@ The **CP4I Mission Console** is a lightweight dashboard that gives you insights 
 
 ```bash
 cd ~/Documents  # or wherever you keep projects
-git clone <repository-url> mission-console
-cd mission-console
+git clone <repository-url> chief-console
+cd chief-console
 ```
 
 **Don't have the repo URL?** Ask the person who shared this with you!
@@ -102,7 +102,7 @@ oc get nodes  # Should list your cluster nodes
 ### Step 4: Run the Mission Console
 
 ```bash
-python3 mission_console.py
+python3 chief_console.py
 ```
 
 **Expected output:**
@@ -130,7 +130,7 @@ Step 4: Rendering dashboard...
 Step 5: Exporting to Excel...
 
 📊 Generating Excel export...
-✓ Excel file created: output/your-cluster.com/mission-console-20260104-182322.xlsx
+✓ Excel file created: output/your-cluster.com/chief-console-20260104-182322.xlsx
 
 ======================================================================
 MISSION CONSOLE READY
@@ -138,13 +138,13 @@ MISSION CONSOLE READY
 
 Dashboard: output/your-cluster.com/dashboard.html
 Snapshot:  output/your-cluster.com/snapshots/snapshot-20260104-182322.json
-Excel:     output/your-cluster.com/mission-console-20260104-182322.xlsx
+Excel:     output/your-cluster.com/chief-console-20260104-182322.xlsx
 
 🚀 Opening dashboard in browser...
    ✓ Dashboard opened: /path/to/output/your-cluster.com/dashboard.html
 
 📊 Excel file location:
-   /path/to/output/your-cluster.com/mission-console-20260104-182322.xlsx
+   /path/to/output/your-cluster.com/chief-console-20260104-182322.xlsx
 ```
 
 **🎉 You're done!** The dashboard automatically opens in your browser!
@@ -156,17 +156,17 @@ Excel:     output/your-cluster.com/mission-console-20260104-182322.xlsx
 After your first run, you'll see a **cluster-specific directory structure**:
 
 ```
-mission-console/
+chief-console/
 ├── output/
 │   └── your-cluster.com/                    ← Cluster-specific directory
 │       ├── dashboard.html                   ← Your dashboard (auto-opens!)
-│       ├── mission-console-TIMESTAMP.xlsx   ← Excel export
+│       ├── chief-console-TIMESTAMP.xlsx   ← Excel export
 │       └── snapshots/
 │           └── snapshot-TIMESTAMP.json      ← Historical snapshots
 ├── src/                                     ← Python code (don't need to modify)
 ├── demo_metadata.yaml                       ← Customize display names here
 ├── resource_categories.yaml                 ← Customize categorization rules
-├── mission_console.py                       ← Main entry point
+├── chief_console.py                       ← Main entry point
 └── monitor.py                               ← Automated monitoring (optional)
 ```
 
@@ -175,15 +175,15 @@ mission-console/
 output/
 ├── cluster-a.techzone.ibm.com/
 │   ├── dashboard.html
-│   ├── mission-console-*.xlsx
+│   ├── chief-console-*.xlsx
 │   └── snapshots/
 ├── cluster-b.techzone.ibm.com/
 │   ├── dashboard.html
-│   ├── mission-console-*.xlsx
+│   ├── chief-console-*.xlsx
 │   └── snapshots/
 └── prod-cluster.example.com/
     ├── dashboard.html
-    ├── mission-console-*.xlsx
+    ├── chief-console-*.xlsx
     └── snapshots/
 ```
 
@@ -254,7 +254,7 @@ licensing:
 
 ### One-Time Run
 ```bash
-python3 mission_console.py
+python3 chief_console.py
 ```
 
 ### Automated Monitoring (Recommended!)
@@ -319,7 +319,7 @@ RUN #1 - 2026-01-04 18:44:13
 crontab -e
 
 # Add this line to run every hour
-0 * * * * cd /path/to/mission-console && /usr/bin/python3 mission_console.py
+0 * * * * cd /path/to/chief-console && /usr/bin/python3 chief_console.py
 ```
 
 **View previous snapshots:**
@@ -386,12 +386,12 @@ oc get namespaces | grep -i integration
 **To see changes:**
 ```bash
 # Run once
-python3 mission_console.py
+python3 chief_console.py
 
 # Make some changes to your cluster (deploy something, restart a pod)
 
 # Run again
-python3 mission_console.py
+python3 chief_console.py
 ```
 
 ### Problem: Dashboard shows empty sections
@@ -489,16 +489,16 @@ The mission console automatically generates an Excel spreadsheet with **5 sheets
 **Location:**
 ```bash
 # Excel files are in your cluster directory
-ls -lh output/your-cluster.com/mission-console-*.xlsx
+ls -lh output/your-cluster.com/chief-console-*.xlsx
 
 # Latest Excel file
-ls -t output/your-cluster.com/mission-console-*.xlsx | head -1
+ls -t output/your-cluster.com/chief-console-*.xlsx | head -1
 ```
 
 **Share with Customers:**
 ```bash
 # Email the latest Excel file to customers for licensing discussions
-open output/your-cluster.com/mission-console-20260104-182322.xlsx
+open output/your-cluster.com/chief-console-20260104-182322.xlsx
 ```
 
 **Excel Features:**
@@ -515,12 +515,12 @@ Switch between clusters seamlessly:
 ```bash
 # Work with Cluster A
 oc login cluster-a.techzone.ibm.com
-python3 mission_console.py
+python3 chief_console.py
 # ✓ Creates: output/cluster-a.techzone.ibm.com/
 
 # Switch to Cluster B
 oc login cluster-b.techzone.ibm.com
-python3 mission_console.py
+python3 chief_console.py
 # ✓ Creates: output/cluster-b.techzone.ibm.com/
 
 # Both dashboards preserved! Compare side-by-side.
@@ -585,7 +585,7 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . /app
 WORKDIR /app
-CMD ["python3", "mission_console.py"]
+CMD ["python3", "chief_console.py"]
 ```
 
 **Q: Can I customize the waves?**
@@ -609,23 +609,23 @@ The CP4I-specific sections will be empty (which is expected).
 ```bash
 # Create a clean copy (without snapshots/output)
 cd ~/Documents
-cp -r mission-console mission-console-clean
-cd mission-console-clean
+cp -r chief-console chief-console-clean
+cd chief-console-clean
 rm -rf output/
 rm -rf .git  # Optional: remove git history
 
 # Create a zip
 cd ..
-zip -r mission-console.zip mission-console-clean
+zip -r chief-console.zip chief-console-clean
 
-# Share mission-console.zip + this README
+# Share chief-console.zip + this README
 ```
 
 ### What to Include
 
 When sharing with colleagues, include:
 1. ✅ This `GETTING_STARTED.md` file
-2. ✅ The entire `mission-console/` directory
+2. ✅ The entire `chief-console/` directory
 3. ✅ A sample `demo_metadata.yaml` (if you've customized it)
 4. ❌ **DO NOT** include `output/` folder (contains your cluster data!)
 
@@ -639,7 +639,7 @@ When sharing with colleagues, include:
 
 ### Files You Shouldn't Modify (Unless You Know What You're Doing)
 - `src/*.py` - Python source code
-- `mission_console.py` - Main entry point
+- `chief_console.py` - Main entry point
 
 ### Documentation
 - `ENVIRONMENT_TAXONOMY.md` - Understand your environment
@@ -656,7 +656,7 @@ Quick checklist:
 - [ ] `oc` CLI installed
 - [ ] Logged into OpenShift cluster
 - [ ] Ran `pip3 install -r requirements.txt`
-- [ ] Ran `python3 mission_console.py`
+- [ ] Ran `python3 chief_console.py`
 - [ ] Dashboard opened in browser
 
 **Having issues?** See the Troubleshooting section above.

@@ -140,7 +140,7 @@ class MissionConsoleMonitor:
         try:
             # Run mission console
             result = subprocess.run(
-                [sys.executable, "mission_console.py"],
+                [sys.executable, "chief_console.py"],
                 capture_output=True,
                 text=True,
                 timeout=120
